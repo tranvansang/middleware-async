@@ -1,4 +1,7 @@
-# Async Middleware
+# Async Middleware [![Build Status](https://travis-ci.org/tranvansang/middleware-async.svg?branch=master)](https://travis-ci.org/tranvansang/middleware-async)
+
+[![NPM](https://nodei.co/npm/middleware-async.png)](https://nodei.co/npm/middleware-async/)
+
 
 A handy tool to write async/promise style middleware for express, connect-like.
 
