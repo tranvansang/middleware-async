@@ -12,6 +12,16 @@
     "test": "mocha --require babel-core/register --require babel-polyfill --recursive",
     "coverage": "nyc mocha --require babel-core/register --require babel-polyfill --recursive"
   },
+  "keywords": [
+    "connect",
+    "express",
+    "async",
+    "middleware",
+    "ES6",
+    "promise",
+    "async",
+    "await"
+  ],
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
