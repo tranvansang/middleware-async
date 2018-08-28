@@ -100,13 +100,12 @@ var combineMiddlewares = exports.combineMiddlewares = function combineMiddleware
   }();
 };
 
-//The send parameter passed to next callback is resolved
 var middlewareToPromise = exports.middlewareToPromise = function middlewareToPromise(middleware) {
   return function (req, res) {
     return new Promise(function (resolve, reject) {
-      return Promise.resolve(middleware(req, res, function (err, data) {
+      return Promise.resolve(middleware(req, res, function (err) {
         if (err) reject(err);
-        resolve(data);
+        resolve();
       })).catch(reject);
     });
   };

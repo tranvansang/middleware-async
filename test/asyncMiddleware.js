@@ -58,8 +58,4 @@ describe('asyncMiddleware', () => {
     }))(null, null, next)
     expect(next).to.have.been.calledOnceWithExactly('123')
   })
-
-  it('should return data', async () => {
-    expect(await middlewareToPromise((req, res, next) => next(null, 1))()).to.equal(1)
-  })
 })

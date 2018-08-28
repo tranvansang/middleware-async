@@ -29,12 +29,11 @@ export const combineMiddlewares = (first, ...middlewares) => {
   }
 }
 
-//The send parameter passed to next callback is resolved
 export const middlewareToPromise = middleware =>
   (req, res) => new Promise((resolve, reject) =>
-    Promise.resolve(middleware(req, res, (err, data) => {
+    Promise.resolve(middleware(req, res, err => {
       if (err) reject(err)
-      resolve(data)
+      resolve()
     })).catch(reject)
   )
 export const combineToAsync = (...args) => middlewareToPromise(combineMiddlewares(...args))
