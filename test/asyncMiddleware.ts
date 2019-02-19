@@ -2,7 +2,7 @@
 import chai, {expect} from 'chai'
 import sinonChai from 'sinon-chai'
 import chaiAsPromised from 'chai-as-promised'
-import asyncMiddleware, {middlewareToPromise} from '../index.js'
+import asyncMiddleware, {middlewareToPromise} from '../index'
 import {stub} from 'sinon'
 
 chai.use(sinonChai)
@@ -28,10 +28,10 @@ describe('asyncMiddleware', () => {
 
   it('should response request', async () => {
     const res = stub()
-    await asyncMiddleware(async (req, res) => {
+    await asyncMiddleware(async (req, res: any) => {
       await Promise.resolve()
       res()
-    })(null, res)
+    })(null, res, stub())
     expect(res).to.have.been.calledOnceWithExactly()
   })
 
@@ -54,7 +54,7 @@ describe('asyncMiddleware', () => {
   it('should catch error in connect-style', async () => {
     const next = stub()
     await asyncMiddleware((async (req, res, next) => {
-      next('123')
+      next(('123' as unknown) as Error)
     }))(null, null, next)
     expect(next).to.have.been.calledOnceWithExactly('123')
   })

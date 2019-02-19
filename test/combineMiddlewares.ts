@@ -3,7 +3,7 @@ import chai, {expect} from 'chai'
 import sinonChai from 'sinon-chai'
 import chaiAsPromised from 'chai-as-promised'
 
-import {combineMiddlewares, middlewareToPromise} from '../index.js'
+import {combineMiddlewares, middlewareToPromise} from '../index'
 
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
@@ -12,12 +12,12 @@ describe('combineMiddlwares', () => {
   it('should go through all middlewares', async () => {
     const req = {val: 0}
     await middlewareToPromise(combineMiddlewares([
-      async (req, res, next) => {
+      async (req: {val: number}, res, next) => {
         await Promise.resolve()
         req.val += 1
         next()
       },
-      (req, res, next) => {
+      (req: {val: number}, res, next) => {
         req.val++
         next()
       },
@@ -30,12 +30,12 @@ describe('combineMiddlwares', () => {
     let error
     try {
       await middlewareToPromise(combineMiddlewares([
-        async (req, res, next) => {
+        async (req: {val: number}, res, next) => {
           await Promise.resolve()
           req.val += 1
-          next('error')
+          next('error' as unknown as Error)
         },
-        (req, res, next) => {
+        (req: {val: number}, res, next) => {
           req.val++
           next()
         },
@@ -50,13 +50,13 @@ describe('combineMiddlwares', () => {
   it('should go through all arraays of middlewares', async () => {
     const req = {val: 0}
     await middlewareToPromise(combineMiddlewares([
-        async (req, res, next) => {
+        async (req: {val: number}, res, next) => {
           await Promise.resolve()
           req.val += 1
           next()
         }],
       [
-        (req, res, next) => {
+        (req: {val: number}, res, next) => {
           req.val++
           next()
         },

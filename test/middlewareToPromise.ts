@@ -3,7 +3,7 @@ import chai, {expect} from 'chai'
 import sinonChai from 'sinon-chai'
 import chaiAsPromised from 'chai-as-promised'
 
-import {middlewareToPromise} from '../index.js'
+import {middlewareToPromise} from '../index'
 
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
@@ -14,7 +14,7 @@ describe('middlewareToPromise', () => {
   })
 
   it('should reject', async () => {
-    await expect(middlewareToPromise((req, res, next) => next('error'))(null, null))
+    await expect(middlewareToPromise((req, res, next) => next('error' as unknown as Error))(null, null))
       .to.eventually.be.rejectedWith('error')
   })
 })
