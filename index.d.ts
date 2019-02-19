@@ -1,11 +1,8 @@
-declare type Request = any;
-declare type Response = any;
-declare type Next = (error?: Error) => any;
-declare type Middleware = (req: Request, res: Response, next: Next) => any;
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 interface _Middlewares {
-    [key: number]: _Middlewares | Middleware;
+    [key: number]: _Middlewares | RequestHandler;
 }
-declare const _default: (middleware: Middleware) => (req: any, res: any, next: Next) => Promise<void>;
+declare const _default: (middleware: RequestHandler) => (req: Request, res: Response, next: NextFunction) => Promise<void>;
 /**
  * wrap async function to connect-like middleware
  * @param middleware can return Promise or throw error
@@ -18,6 +15,6 @@ export default _default;
  * @param middlewares
  * @returns {Function}
  */
-export declare const combineMiddlewares: (first?: _Middlewares | Middleware | undefined, ...middlewares: (_Middlewares | Middleware)[]) => (req: any, res: any, next: Next) => Promise<any>;
-export declare const middlewareToPromise: (middleware: Middleware) => (req: any, res?: any) => Promise<{}>;
-export declare const combineToAsync: (...args: (_Middlewares | Middleware)[]) => (req: any, res?: any) => Promise<{}>;
+export declare const combineMiddlewares: (first?: RequestHandler | _Middlewares | undefined, ...middlewares: (RequestHandler | _Middlewares)[]) => (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const middlewareToPromise: (middleware: RequestHandler) => (req: Request, res: Response) => Promise<{}>;
+export declare const combineToAsync: (...args: (RequestHandler | _Middlewares)[]) => (req: Request, res: Response) => Promise<{}>;

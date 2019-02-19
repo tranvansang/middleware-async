@@ -39,6 +39,7 @@
     "typescript": "^3.3.3"
   },
   "dependencies": {
+    "@types/express": "^4.16.1",
     "@types/node": "^11.9.4"
   }
 }

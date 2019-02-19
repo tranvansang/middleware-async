@@ -4,6 +4,7 @@ import sinonChai from 'sinon-chai'
 import chaiAsPromised from 'chai-as-promised'
 import asyncMiddleware, {middlewareToPromise} from '../index'
 import {stub} from 'sinon'
+import {Request, Response} from 'express'
 
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
@@ -13,7 +14,7 @@ describe('asyncMiddleware', () => {
     const next = stub()
     await asyncMiddleware((req, res, next) => {
       next()
-    })(null, null, next)
+    })(null as unknown as Request, null as unknown as Response, next)
     expect(next).to.have.been.calledOnceWithExactly()
   })
 
@@ -22,7 +23,7 @@ describe('asyncMiddleware', () => {
     await asyncMiddleware(async (req, res, next) => {
       await Promise.resolve()
       next()
-    })(null, null, next)
+    })(null as unknown as Request, null as unknown as Response, next)
     expect(next).to.have.been.calledOnceWithExactly()
   })
 
@@ -31,7 +32,7 @@ describe('asyncMiddleware', () => {
     await asyncMiddleware(async (req, res: any) => {
       await Promise.resolve()
       res()
-    })(null, res, stub())
+    })(null as unknown as Request, res as unknown as Response, stub())
     expect(res).to.have.been.calledOnceWithExactly()
   })
 
@@ -39,7 +40,7 @@ describe('asyncMiddleware', () => {
     const next = stub()
     await asyncMiddleware((async () => {
       throw '123'
-    }))(null, null, next)
+    }))(null as unknown as Request, null as unknown as Response, next)
     expect(next).to.have.been.calledOnceWithExactly('123')
   })
 
@@ -47,7 +48,7 @@ describe('asyncMiddleware', () => {
     const next = stub()
     await asyncMiddleware((async () => {
       await Promise.reject('123')
-    }))(null, null, next)
+    }))(null as unknown as Request, null as unknown as Response, next)
     expect(next).to.have.been.calledOnceWithExactly('123')
   })
 
@@ -55,7 +56,7 @@ describe('asyncMiddleware', () => {
     const next = stub()
     await asyncMiddleware((async (req, res, next) => {
       next(('123' as unknown) as Error)
-    }))(null, null, next)
+    }))(null as unknown as Request, null as unknown as Response, next)
     expect(next).to.have.been.calledOnceWithExactly('123')
   })
 })
