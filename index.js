@@ -35,66 +35,83 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var _this = this;
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
+exports.asyncMiddleware = function (middleware) { return function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
+    var called, cb, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                called = false;
+                cb = function () {
+                    var args = [];
+                    for (var _i = 0; _i < arguments.length; _i++) {
+                        args[_i] = arguments[_i];
+                    }
+                    if (called)
+                        return;
+                    called = true;
+                    next.apply(void 0, args);
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, middleware(req, res, cb)];
+            case 2:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _a.sent();
+                cb(err_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); }; };
 /**
  * wrap async function to connect-like middleware
  * @param middleware can return Promise or throw error
  * @returns {Function} connect-like middleware
+ * next function is always called at most once
  */
-exports.default = (function (middleware) { return function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-    var err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, middleware(req, res, next)];
-            case 1:
-                _a.sent();
-                return [3 /*break*/, 3];
-            case 2:
-                err_1 = _a.sent();
-                next(err_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); }; });
+exports["default"] = exports.asyncMiddleware;
 /**
  * combine list of middlewares into 1 middlewares
+ * then combined chain does not break if any middelware throws error
+ * to catch these errors, wrap the middlewares with asyncMiddleware
  * @param first
  * @param middlewares
  * @returns {Function}
  */
 exports.combineMiddlewares = function (first) {
+    var _a;
     var middlewares = [];
     for (var _i = 1; _i < arguments.length; _i++) {
         middlewares[_i - 1] = arguments[_i];
     }
-    var _a;
     while (Array.isArray(first))
         _a = first.concat(middlewares), first = _a[0], middlewares = _a.slice(1);
-    return function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            if (!first)
-                return [2 /*return*/, next()];
-            first(req, res, function (err) {
-                if (err)
-                    return next(err);
-                exports.combineMiddlewares(middlewares)(req, res, next).catch(next);
-            });
-            return [2 /*return*/];
-        });
-    }); };
+    return function (req, res, next) {
+        if (!first)
+            return next();
+        first(req, res, function (err) { return err
+            ? next(err)
+            : exports.combineMiddlewares.apply(void 0, middlewares)(req, res, next); });
+    };
 };
-exports.middlewareToPromise = function (middleware) {
-    return function (req, res) { return new Promise(function (resolve, reject) {
-        return Promise.resolve(middleware(req, res, function (err) {
-            if (err)
-                reject(err);
-            resolve();
-        })).catch(reject);
-    }); };
-};
+/**
+ * mimic the next middleware
+ * @param middleware a single middleware
+ * @return result/error promise
+ */
+exports.middlewareToPromise = function (middleware) { return function (req, res) { return new Promise(function (resolve, reject) { return middleware(req, res, function (err) {
+    if (err)
+        reject(err);
+    resolve();
+}); }); }; };
+/**
+ * extended version of middlewareToPromise which allows one or more middleware / array of middlewares
+ * @param args
+ */
 exports.combineToAsync = function () {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {

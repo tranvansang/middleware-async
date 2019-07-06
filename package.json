@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "build": "yarn tsc",
+    "build": "yarn tsc index.ts",
     "test": "yarn jest",
     "coverage": "yarn jest --coverage",
     "lint": "yarn eslint **/*.ts; yarn tslint -p tsconfig.json"
