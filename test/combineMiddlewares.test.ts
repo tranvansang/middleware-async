@@ -1,64 +1,63 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import {combineMiddlewares, middlewareToPromise} from '../index'
-import {Request, Response} from 'express'
+import {NextFunction, Request, Response} from 'express'
+import flipPromise from 'flip-promise'
 
-interface RequestExtended extends Request {
-  val: number
+declare global {
+  namespace Express {
+    interface Request {
+      val: number
+    }
+  }
 }
 
 describe('combineMiddlwares', () => {
   test('should go through all middlewares', async () => {
-    const req = {val: 0} as RequestExtended
+    const req = {val: 1}
     await middlewareToPromise(combineMiddlewares([
-      async (req, res, next) => {
-        await Promise.resolve()
-        ;(req as RequestExtended).val += 1
+      (req, res, next) => {
+        req.val += 1
         next()
       },
       (req, res, next) => {
-        (req as RequestExtended).val += 1
+        req.val += 2
         next()
       },
-    ]))(req, undefined as unknown as Response)
-    expect(req.val).toBe(2)
+    ]))(req as Request, undefined as unknown as Response, undefined as unknown as NextFunction)
+    expect(req.val).toBe(4)
   })
 
   test('should skip if one through error', async () => {
-    const req = {val: 0} as RequestExtended
-    let error
-    try {
-      await middlewareToPromise(combineMiddlewares([
-        async (req, res, next) => {
-          await Promise.resolve()
-          ;(req as RequestExtended).val += 1
-          next('error' as unknown as Error)
-        },
-        (req, res, next) => {
-          (req as RequestExtended).val++
-          next()
-        },
-      ]))(req, undefined as unknown as Response)
-    } catch (err) {
-      error = err
-    }
-    expect(req.val).toBe(1)
-    expect(error).toBe('error')
+    const req = {val: 1}
+    expect(
+      await flipPromise(middlewareToPromise(combineMiddlewares([
+          (req, res, next) => {
+            req.val += 2
+            next('error')
+          },
+          (req, res, next) => {
+            req.val++
+            next()
+          },
+        ]))(req as Request, undefined as unknown as Response, undefined as unknown as NextFunction)
+      )
+    ).toBe('error')
+    expect(req.val).toBe(3)
   })
 
-  test('should go through all arraays of middlewares', async () => {
-    const req = {val: 0} as RequestExtended
+  test('should go through all arrays of middlewares', async () => {
+    const req = {val: 1}
     await middlewareToPromise(combineMiddlewares([
-        async (req, res, next) => {
-          await Promise.resolve()
-          ;(req as RequestExtended).val++
+        (req, res, next) => {
+          req.val++
           next()
         }],
       [
         (req, res, next) => {
-          (req as RequestExtended).val++
+          req.val += 3
           next()
         },
-      ]))(req, undefined as unknown as Response)
-    expect(req.val).toBe(2)
+      ]))(req as Request, undefined as unknown as Response, undefined as unknown as NextFunction)
+    expect(req.val).toBe(5)
   })
 })

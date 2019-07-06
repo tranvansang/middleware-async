@@ -4,6 +4,6 @@ module.exports = {
   verbose: true,
   collectCoverageFrom: ['<rootDir>/index.ts'],
   transform: { '^.+\\.(ts)$': 'babel-jest', },
-  testMatch: [ '<rootDir>/test/*.test.ts' ],
+  testMatch: ['<rootDir>/test/*.test.ts'],
   testEnvironment: 'node'
 }

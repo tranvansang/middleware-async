@@ -16,20 +16,45 @@ app.use(async (req, res, next) => {
 })
 ```
 
-The `next()` will be executed after `User.findById(...).exec()` is fulfilled because express allow middleware returning Promise.
+The `next()` will be executed after `User.findById(...).exec()` is fulfilled because express allow handler returning Promise.
 
-However, express does not support if promise returned by the middleware is rejected.
-The followings middlewares will never be called.
+However, express does not support if promise returned by the handler is rejected.
+The following handlers will never be called.
 
-Solution is simple by wrapping the middleware with
+Solution is simple by wrapping the handler with
 
 ```javascript
-import middlewaareAsync from 'middleware-async'
-app.use(middlewaareAsync(async (req, res, next) => {
+import {asyncMiddleware} from 'middleware-async'
+app.use(asyncMiddleware(async (req, res, next) => {
   req.user = await User.findById(req.params.id).exec()
   next()  
 }))
 ```
+
+Note that once the `next` function is called, following errors will not be thrown, and vice versa.
+Example:
+
+```javascript
+import {asyncMiddleware} from 'middleware-async'
+app.use(asyncMiddleware(async (req, res, next) => {
+  next()  
+  throw new Error('my error')
+}))
+```
+the error `new Error('my error')` will not be thrown because the `next` function is called.
+
+Or
+
+```javascript
+import {asyncMiddleware} from 'middleware-async'
+app.use(asyncMiddleware((req, res, next) => {
+  return Promise((resolve, reject)=> {
+    reject()
+    setTimeout(() => next(new Error('next error')), 0)
+  })
+}))
+```
+the `new Error('next error')` error will not be thrown because the promise is already rejected
 
 ## How to install
 
@@ -43,15 +68,16 @@ yarn add middleware-async
 
 ## API
 
-- `middlewaareAsync(middlware)`: return a middleware that covers error thrown or error that is rejected by `middleware`
-- `combineMiddlewares(list of middlewares or list of list of middlewares)`: combine many middlewares into one middleware. Very useful for testing
-- `middlewareToPromise`: convert express-style middleware into Promise
+- `middlewaareAsync(middlware)`: returns a handler that covers error thrown or error that is rejected by handler via the `next` function. The next function is called at most once.
+- `combineMiddlewares(list of handlers or list of list of handlers with any depth)`: combine many handlers into one handler. Very useful for testing
+You can combine your handlers like `combineMiddlewares([mdw1, mdw2], [[mdw3], [mdw4, [mdw5, mdw6]], mdw7], mdw8)`. The function will take care of expanding parameters.
+- `middlewareToPromise`: convert express-style handler into Promise by appending the next handler to the input handler.
 - `combineToAsync`: combination of `middleewareToPromise` and `combineMiddlewares`
 
 ## Sample usages
 
 ```javascript
-import middlewareAsync, {combineMiddlewares, combineToAsync, middlewareToPromise} from 'middleeware-async'
+import {asyncMiddleware, combineMiddlewares, combineToAsync, middlewareToPromise} from 'middleeware-async'
 
 describe('combineMiddlwares', () => {
   test('should go through all middlewares', async () => {

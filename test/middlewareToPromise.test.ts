@@ -1,11 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import {middlewareToPromise} from '../index'
-import {Request, Response} from 'express'
+import {NextFunction, Request, Response} from 'express'
 import flipPromise from 'flip-promise'
 
 describe('middlewareToPromise', () => {
   test('should resolve', async () => {
-    await middlewareToPromise((req, res, next) => next())(null as unknown as Request, null as unknown as Response)
+    await middlewareToPromise((req, res, next) => next())(
+      undefined as unknown as Request,
+      undefined as unknown as Response,
+      undefined as unknown as NextFunction
+    )
   })
 
   test('should reject', async () => {
@@ -14,7 +18,11 @@ describe('middlewareToPromise', () => {
         (req, res, next) => next(
           'error' as unknown as Error
         )
-      )(null as unknown as Request, null as unknown as Response)
+      )(
+        undefined as unknown as Request,
+        undefined as unknown as Response,
+        undefined as unknown as NextFunction
+      )
     )).toBe('error')
   })
 })
