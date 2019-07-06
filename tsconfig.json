@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     // Target latest version of ECMAScript.
-    "target": "esnext",
+    "target": "ES5",
     // Search under node_modules for non-relative imports.
     "moduleResolution": "node",
     // Process & infer types from .js files.
@@ -15,13 +15,14 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "lib": ["esnext"],
-    "types": [ "node", "mocha" ],
+    "types": [
+      "node",
+      "jest"
+    ],
     "module": "commonjs"
   },
   "include": [
     "**/*.ts"
   ],
-  "exclude": [
-    "test/**/*.ts"
-  ]
+  "exclude": []
 }

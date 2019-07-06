@@ -24,7 +24,7 @@ export default (middleware: RequestHandler) => async (req: Request, res: Respons
  * @param middlewares
  * @returns {Function}
  */
-export const combineMiddlewares = (first?: Middlewares, ...middlewares: Array<Middlewares>) => {
+export const combineMiddlewares = (first?: Middlewares, ...middlewares: ReadonlyArray<Middlewares>) => {
   while (Array.isArray(first))
     [first, ...middlewares] = [...first, ...middlewares]
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -43,4 +43,4 @@ export const middlewareToPromise = (middleware: RequestHandler) =>
       resolve()
     })).catch(reject)
   )
-export const combineToAsync = (...args: Array<Middlewares>) => middlewareToPromise(combineMiddlewares(...args))
+export const combineToAsync = (...args: ReadonlyArray<Middlewares>) => middlewareToPromise(combineMiddlewares(...args))

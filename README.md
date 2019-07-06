@@ -54,7 +54,7 @@ yarn add middleware-async
 import middlewareAsync, {combineMiddlewares, combineToAsync, middlewareToPromise} from 'middleeware-async'
 
 describe('combineMiddlwares', () => {
-  it('should go through all middlewares', async () => {
+  test('should go through all middlewares', async () => {
     const req = {val: 0}
     await combineToAsync([
       async (req, res, next) => {
@@ -67,7 +67,7 @@ describe('combineMiddlwares', () => {
         next()
       },
     ])(req)
-    expect(req.val).to.equal(2)
+    expect(req.val).toBe(2)
   })
 })
 ```

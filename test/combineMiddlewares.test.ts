@@ -1,20 +1,13 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import chai, {expect} from 'chai'
-import sinonChai from 'sinon-chai'
-import chaiAsPromised from 'chai-as-promised'
-
 import {combineMiddlewares, middlewareToPromise} from '../index'
-import {Response, Request} from 'express'
-
-chai.use(sinonChai)
-chai.use(chaiAsPromised)
+import {Request, Response} from 'express'
 
 interface RequestExtended extends Request {
   val: number
 }
 
 describe('combineMiddlwares', () => {
-  it('should go through all middlewares', async () => {
+  test('should go through all middlewares', async () => {
     const req = {val: 0} as RequestExtended
     await middlewareToPromise(combineMiddlewares([
       async (req, res, next) => {
@@ -27,10 +20,10 @@ describe('combineMiddlwares', () => {
         next()
       },
     ]))(req, undefined as unknown as Response)
-    expect(req.val).to.equal(2)
+    expect(req.val).toBe(2)
   })
 
-  it('should skip if one through error', async () => {
+  test('should skip if one through error', async () => {
     const req = {val: 0} as RequestExtended
     let error
     try {
@@ -48,11 +41,11 @@ describe('combineMiddlwares', () => {
     } catch (err) {
       error = err
     }
-    expect(req.val).to.equal(1)
-    expect(error).to.equal('error')
+    expect(req.val).toBe(1)
+    expect(error).toBe('error')
   })
 
-  it('should go through all arraays of middlewares', async () => {
+  test('should go through all arraays of middlewares', async () => {
     const req = {val: 0} as RequestExtended
     await middlewareToPromise(combineMiddlewares([
         async (req, res, next) => {
@@ -66,6 +59,6 @@ describe('combineMiddlwares', () => {
           next()
         },
       ]))(req, undefined as unknown as Response)
-    expect(req.val).to.equal(2)
+    expect(req.val).toBe(2)
   })
 })
