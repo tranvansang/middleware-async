@@ -53,7 +53,7 @@ export const combineMiddlewares = (
  * @param middleware a single middleware
  * @return result/error promise
  */
-export const middlewareToPromise = (middleware: RequestHandler): RequestHandler => (req, res) => new Promise(
+export const middlewareToPromise = (middleware: RequestHandler) => (req: Request, res: Response): Promise<undefined> => new Promise(
   (resolve, reject) => middleware(req, res, err => {
     if (err) reject(err)
     resolve()

@@ -24,9 +24,9 @@ export declare const combineMiddlewares: (first?: IRequestHandler, ...middleware
  * @param middleware a single middleware
  * @return result/error promise
  */
-export declare const middlewareToPromise: (middleware: RequestHandler) => RequestHandler;
+export declare const middlewareToPromise: (middleware: RequestHandler) => (req: Request, res: Response) => Promise<undefined>;
 /**
  * extended version of middlewareToPromise which allows one or more middleware / array of middlewares
  * @param args
  */
-export declare const combineToAsync: (...args: readonly RequestHandler[]) => RequestHandler;
+export declare const combineToAsync: (...args: readonly RequestHandler[]) => (req: Request, res: Response) => Promise<undefined>;
