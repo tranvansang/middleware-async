@@ -64,6 +64,6 @@ export const middlewareToPromise = (middleware: RequestHandler) => (req: Request
  * extended version of middlewareToPromise which allows one or more middleware / array of middlewares
  * @param args
  */
-export const combineToAsync = (...args: ReadonlyArray<RequestHandler>) => middlewareToPromise(
+export const combineToAsync = (...args: IRequestHandlerArray) => middlewareToPromise(
   combineMiddlewares(...args)
 )
