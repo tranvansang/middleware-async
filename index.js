@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -34,9 +35,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 exports.__esModule = true;
-exports.asyncMiddleware = function (middleware) { return function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
+exports.asyncMiddleware = function (middleware) { return function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var called, cb, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -89,7 +96,7 @@ exports.combineMiddlewares = function (first) {
         middlewares[_i - 1] = arguments[_i];
     }
     while (Array.isArray(first))
-        _a = first.concat(middlewares), first = _a[0], middlewares = _a.slice(1);
+        _a = __spreadArrays(first, middlewares), first = _a[0], middlewares = _a.slice(1);
     return function (req, res, next) {
         if (!first)
             return next();
