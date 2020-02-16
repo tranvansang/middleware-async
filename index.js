@@ -106,7 +106,8 @@ exports.combineMiddlewares = function (first) {
 exports.middlewareToPromise = function (middleware) { return function (req, res) { return new Promise(function (resolve, reject) { return middleware(req, res, function (err) {
     if (err)
         reject(err);
-    resolve();
+    else
+        resolve();
 }); }); }; };
 /**
  * extended version of middlewareToPromise which allows one or more middleware / array of middlewares
