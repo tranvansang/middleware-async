@@ -8,7 +8,6 @@ describe('middlewareToPromise', () => {
     await middlewareToPromise((req, res, next) => next())(
       undefined as unknown as Request,
       undefined as unknown as Response,
-      undefined as unknown as NextFunction
     )
   })
 
@@ -21,7 +20,6 @@ describe('middlewareToPromise', () => {
       )(
         undefined as unknown as Request,
         undefined as unknown as Response,
-        undefined as unknown as NextFunction
       )
     )).toBe('error')
   })

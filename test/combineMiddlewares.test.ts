@@ -23,7 +23,7 @@ describe('combineMiddlwares', () => {
         req.val += 2
         next()
       },
-    ]))(req as Request, undefined as unknown as Response, undefined as unknown as NextFunction)
+    ]))(req as Request, undefined as unknown as Response)
     expect(req.val).toBe(4)
   })
 
@@ -39,7 +39,7 @@ describe('combineMiddlwares', () => {
             req.val++
             next()
           },
-        ]))(req as Request, undefined as unknown as Response, undefined as unknown as NextFunction)
+        ]))(req as Request, undefined as unknown as Response)
       )
     ).toBe('error')
     expect(req.val).toBe(3)
@@ -57,7 +57,7 @@ describe('combineMiddlwares', () => {
           req.val += 3
           next()
         },
-      ]))(req as Request, undefined as unknown as Response, undefined as unknown as NextFunction)
+      ]))(req as Request, undefined as unknown as Response)
     expect(req.val).toBe(5)
   })
 })
