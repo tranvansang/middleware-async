@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-export declare const asyncMiddleware: (middleware: RequestHandler<import("express-serve-static-core").ParamsDictionary>) => (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response<any>, next: NextFunction) => void;
+export declare const asyncMiddleware: (middleware: (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response<any>, next: NextFunction) => any) => RequestHandler<import("express-serve-static-core").ParamsDictionary>;
 /**
  * wrap async function to connect-like middleware
  * @param middleware can return Promise or throw error
