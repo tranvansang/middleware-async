@@ -43,37 +43,39 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 exports.__esModule = true;
-exports.asyncMiddleware = function (middleware) { return function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var called, cb, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                called = false;
-                cb = function () {
-                    var args = [];
-                    for (var _i = 0; _i < arguments.length; _i++) {
-                        args[_i] = arguments[_i];
-                    }
-                    if (called)
-                        return;
-                    called = true;
-                    next.apply(void 0, args);
-                };
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, middleware(req, res, cb)];
-            case 2:
-                _a.sent();
-                return [3 /*break*/, 4];
-            case 3:
-                err_1 = _a.sent();
-                cb(err_1);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); }; };
+exports.asyncMiddleware = function (middleware) { return function (req, res, next) {
+    (function () { return __awaiter(void 0, void 0, void 0, function () {
+        var called, cb, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    called = false;
+                    cb = function () {
+                        var args = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            args[_i] = arguments[_i];
+                        }
+                        if (called)
+                            return;
+                        called = true;
+                        next.apply(void 0, args);
+                    };
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, middleware(req, res, cb)];
+                case 2:
+                    _a.sent();
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    cb(err_1);
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); })();
+}; };
 /**
  * wrap async function to connect-like middleware
  * @param middleware can return Promise or throw error

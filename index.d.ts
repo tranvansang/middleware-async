@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-export declare const asyncMiddleware: (middleware: RequestHandler) => (req: Request, res: Response, next: NextFunction) => Promise<void>;
+export declare const asyncMiddleware: (middleware: RequestHandler) => (req: Request, res: Response, next: NextFunction) => void;
 /**
  * wrap async function to connect-like middleware
  * @param middleware can return Promise or throw error
