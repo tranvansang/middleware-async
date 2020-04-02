@@ -1,19 +1,21 @@
 import {NextFunction, Request, RequestHandler, Response} from 'express'
 
-export const asyncMiddleware = (middleware: RequestHandler) => async (
+export const asyncMiddleware = (middleware: RequestHandler) => (
   req: Request, res: Response, next: NextFunction
 ) => {
-  let called = false
-  const cb = <T>(...args: ReadonlyArray<T>) => {
-    if (called) return
-    called = true
-    next(...args)
-  }
-  try {
-    await middleware(req, res, cb)
-  } catch (err) {
-    cb(err)
-  }
+  (async () => {
+    let called = false
+    const cb = <T>(...args: ReadonlyArray<T>) => {
+      if (called) return
+      called = true
+      next(...args)
+    }
+    try {
+      await middleware(req, res, cb)
+    } catch (err) {
+      cb(err)
+    }
+  })()
 }
 
 /**
