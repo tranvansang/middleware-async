@@ -1,66 +1,82 @@
 {
-  "extends": [
-    "airbnb-base",
-    "eslint:recommended"
-  ],
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    },
-    "react": {
-      "version": "detect"
-    }
-  },
-  "env": {
-    "node": true,
-    "es6": true,
-    "browser": true,
-    "jest": true
-  },
-  "plugins": [
-    "babel",
-    "jest"
-  ],
-  "rules": {
-    "no-irregular-whitespace": "off",
-    "comma-dangle": "off",
-    "function-paren-newline": "off",
-    "no-param-reassign": "off",
-    "semi": ["error", "never"],
-    "import/first": "off",
-    "import/order": "off",
-    "import/prefer-default-export": "off",
-    "object-curly-spacing": "off",
-    "padded-blocks": "off",
-    "spaced-comment": "off",
-    "radix": "off",
-    "no-restricted-globals": "off",
-    "curly": "off",
-    "lines-between-class-members": "off",
-    "object-curly-newline": "off",
-    "consistent-return": "off",
-    "max-len": ["error", {"code":  120}],
-    "arrow-parens": ["error", "as-needed"],
-    "no-async-promise-executor": "off",
-    "no-confusing-arrow": "off",
-    "no-nested-ternary": "off",
-    "no-return-assign": "off",
-    "no-restricted-syntax": "off",
-    "no-underscore-dangle": "off",
-    "no-floating-decimal": "off",
-    "prefer-destructuring": "off",
-    "no-mixed-operators": "off",
-    "no-return-await": "off",
-    "no-plusplus": "off"
-  },
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "legacyDecorators": true
-    }
-  },
-  "globals": {
-  }
+	"extends": [
+		"airbnb-base",
+		"eslint:recommended"
+	],
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"extensions": [
+					".js",
+					".jsx",
+					".ts",
+					".tsx"
+				]
+			}
+		},
+		"react": {
+			"version": "detect"
+		}
+	},
+	"env": {
+		"node": true,
+		"es6": true,
+		"browser": true,
+		"jest": true
+	},
+	"plugins": [
+		"babel",
+		"jest"
+	],
+	"rules": {
+		"no-irregular-whitespace": "off",
+		"comma-dangle": "off",
+		"function-paren-newline": "off",
+		"no-param-reassign": "off",
+		"semi": [
+			"error",
+			"never"
+		],
+		"import/first": "off",
+		"import/order": "off",
+		"import/prefer-default-export": "off",
+		"object-curly-spacing": "off",
+		"padded-blocks": "off",
+		"spaced-comment": "off",
+		"radix": "off",
+		"no-restricted-globals": "off",
+		"curly": "off",
+		"lines-between-class-members": "off",
+		"object-curly-newline": "off",
+		"consistent-return": "off",
+		"max-len": [
+			"error",
+			{
+				"code": 120
+			}
+		],
+		"arrow-parens": [
+			"error",
+			"as-needed"
+		],
+		"no-async-promise-executor": "off",
+		"no-confusing-arrow": "off",
+		"no-nested-ternary": "off",
+		"no-return-assign": "off",
+		"no-restricted-syntax": "off",
+		"no-underscore-dangle": "off",
+		"no-floating-decimal": "off",
+		"prefer-destructuring": "off",
+		"no-mixed-operators": "off",
+		"no-return-await": "off",
+		"no-plusplus": "off"
+	},
+	"parser": "babel-eslint",
+	"parserOptions": {
+		"ecmaFeatures": {
+			"legacyDecorators": true
+		}
+	},
+	"globals": {
+	}
 }

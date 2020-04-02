@@ -1,21 +1,21 @@
 import {NextFunction, Request, RequestHandler, Response} from 'express'
 
 export const asyncMiddleware = (middleware: RequestHandler) => (
-  req: Request, res: Response, next: NextFunction
+	req: Request, res: Response, next: NextFunction
 ) => {
-  (async () => {
-    let called = false
-    const cb = <T>(...args: ReadonlyArray<T>) => {
-      if (called) return
-      called = true
-      next(...args)
-    }
-    try {
-      await middleware(req, res, cb)
-    } catch (err) {
-      cb(err)
-    }
-  })()
+	(async () => {
+		let called = false
+		const cb = <T>(...args: ReadonlyArray<T>) => {
+			if (called) return
+			called = true
+			next(...args)
+		}
+		try {
+			await middleware(req, res, cb)
+		} catch (err) {
+			cb(err)
+		}
+	})()
 }
 
 /**
@@ -27,7 +27,10 @@ export const asyncMiddleware = (middleware: RequestHandler) => (
 export default asyncMiddleware
 
 type IRequestHandler = RequestHandler | IRequestHandlerArray
-interface IRequestHandlerArray extends ReadonlyArray<IRequestHandler> { }
+
+interface IRequestHandlerArray extends ReadonlyArray<IRequestHandler> {
+}
+
 /**
  * combine list of middlewares into 1 middlewares
  * then combined chain does not break if any middelware throws error
@@ -37,17 +40,18 @@ interface IRequestHandlerArray extends ReadonlyArray<IRequestHandler> { }
  * @returns {Function}
  */
 export const combineMiddlewares = (
-  first?: IRequestHandler,
-  ...middlewares: ReadonlyArray<IRequestHandler>
+	first?: IRequestHandler,
+	...middlewares: ReadonlyArray<IRequestHandler>
 ) => {
-  while (Array.isArray(first)) [first, ...middlewares] = [...first, ...middlewares]
-  return (req: Request, res: Response, next: NextFunction) => {
-    if (!first) return next()
-    ;(first as RequestHandler)(req, res, err => err
-      ? next(err)
-      : combineMiddlewares(...middlewares)(req, res, next)
-    )
-  }
+	while (Array.isArray(first)) [first, ...middlewares] = [...first, ...middlewares]
+	return (req: Request, res: Response, next: NextFunction) => {
+		if (!first) return next()
+			;
+		(first as RequestHandler)(req, res, err => err
+			? next(err)
+			: combineMiddlewares(...middlewares)(req, res, next)
+		)
+	}
 }
 
 /**
@@ -56,10 +60,10 @@ export const combineMiddlewares = (
  * @return result/error promise
  */
 export const middlewareToPromise = (middleware: RequestHandler) => (req: Request, res: Response): Promise<undefined> => new Promise(
-  (resolve, reject) => middleware(req, res, err => {
-    if (err) reject(err)
-    else resolve()
-  })
+	(resolve, reject) => middleware(req, res, err => {
+		if (err) reject(err)
+		else resolve()
+	})
 )
 
 /**
@@ -67,5 +71,5 @@ export const middlewareToPromise = (middleware: RequestHandler) => (req: Request
  * @param args
  */
 export const combineToAsync = (...args: IRequestHandlerArray) => middlewareToPromise(
-  combineMiddlewares(...args)
+	combineMiddlewares(...args)
 )
