@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-export declare const asyncMiddleware: (middleware: RequestHandler) => (req: Request, res: Response, next: NextFunction) => void;
+export declare const asyncMiddleware: (middleware: RequestHandler<import("express-serve-static-core").ParamsDictionary>) => (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response<any>, next: NextFunction) => void;
 /**
  * wrap async function to connect-like middleware
  * @param middleware can return Promise or throw error
@@ -18,15 +18,15 @@ interface IRequestHandlerArray extends ReadonlyArray<IRequestHandler> {
  * @param middlewares
  * @returns {Function}
  */
-export declare const combineMiddlewares: (first?: IRequestHandler, ...middlewares: readonly IRequestHandler[]) => (req: Request, res: Response, next: NextFunction) => void;
+export declare const combineMiddlewares: (first?: IRequestHandler, ...middlewares: readonly IRequestHandler[]) => (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response<any>, next: NextFunction) => void;
 /**
  * mimic the next middleware
  * @param middleware a single middleware
  * @return result/error promise
  */
-export declare const middlewareToPromise: (middleware: RequestHandler) => (req: Request, res: Response) => Promise<undefined>;
+export declare const middlewareToPromise: (middleware: RequestHandler<import("express-serve-static-core").ParamsDictionary>) => (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response<any>) => Promise<undefined>;
 /**
  * extended version of middlewareToPromise which allows one or more middleware / array of middlewares
  * @param args
  */
-export declare const combineToAsync: (...args: IRequestHandlerArray) => (req: Request, res: Response) => Promise<undefined>;
+export declare const combineToAsync: (...args: IRequestHandlerArray) => (req: Request<import("express-serve-static-core").ParamsDictionary>, res: Response<any>) => Promise<undefined>;
