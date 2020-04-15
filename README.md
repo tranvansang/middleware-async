@@ -97,3 +97,5 @@ describe('combineMiddlwares', () => {
   })
 })
 ```
+
+Check [test](https://github.com/tranvansang/middleware-async/tree/master/test) directory for more sample usages.
