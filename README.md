@@ -68,7 +68,7 @@ yarn add middleware-async
 
 ## API
 
-- `middlewaareAsync(middlware)`: returns a handler that covers error thrown or error that is rejected by handler via the `next` function. The next function is called at most once.
+- `asyncMiddleware(middlware)`: returns a handler that covers error thrown or error that is rejected by handler via the `next` function. The next function is called at most once.
 - `combineMiddlewares(list of handlers or list of list of handlers with any depth)`: combine many handlers into one handler. Very useful for testing
 You can combine your handlers like `combineMiddlewares([mdw1, mdw2], [[mdw3], [mdw4, [mdw5, mdw6]], mdw7], mdw8)`. The function will take care of expanding parameters.
 - `middlewareToPromise`: convert express-style handler into Promise by appending the next handler to the input handler.
