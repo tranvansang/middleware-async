@@ -1,6 +1,6 @@
 {
 	"name": "middleware-async",
-	"version": "1.1.5",
+	"version": "1.2.0",
 	"description": "A handy tool to work with async/promise express middleware",
 	"main": "index.js",
 	"repository": "github:tranvansang/middleware-async",
