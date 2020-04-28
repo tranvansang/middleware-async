@@ -1,13 +1,13 @@
+// @ts-nocheck
 /* eslint-disable import/no-extraneous-dependencies */
 import {middlewareToPromise} from '../index'
-import {Request, Response} from 'express'
 import flipPromise from 'flip-promise'
 
 describe('middlewareToPromise', () => {
 	test('should resolve', async () => {
 		await middlewareToPromise((req, res, next) => next())(
-			undefined as unknown as Request,
-			undefined as unknown as Response,
+			undefined,
+			undefined,
 		)
 	})
 
@@ -15,12 +15,26 @@ describe('middlewareToPromise', () => {
 		expect(await flipPromise(
 			middlewareToPromise(
 				(req, res, next) => next(
-					'error' as unknown as Error
+					'error'
 				)
 			)(
-				undefined as unknown as Request,
-				undefined as unknown as Response,
+				undefined,
+				undefined,
 			)
 		)).toBe('error')
+	})
+
+	test('should ignore if handler throws error. compatible to express <= 4.x. With express >= 5.0, this test should fail', async () => {
+		await Promise.race([
+			new Promise(resolve => setTimeout(resolve, 500)),
+			middlewareToPromise(() => {
+				throw new Error('hi')
+			})()
+		])
+	})
+	xtest('should handle if handler throws error. compatible to express >= 5.0. With express <= 4.x, this test should fail', async () => {
+		await flipPromise(middlewareToPromise(() => {
+			throw new Error('hi')
+		})())
 	})
 })

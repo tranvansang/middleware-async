@@ -1,6 +1,6 @@
+// @ts-nocheck
 /* eslint-disable import/no-extraneous-dependencies */
 import {combineMiddlewares, middlewareToPromise} from '../index'
-import {Request, Response} from 'express'
 import flipPromise from 'flip-promise'
 
 declare global {
@@ -23,7 +23,7 @@ describe('combineMiddlwares', () => {
 				req.val += 2
 				next()
 			},
-		]))(req as Request, undefined as unknown as Response)
+		]))(req, undefined)
 		expect(req.val).toBe(4)
 	})
 
@@ -39,7 +39,7 @@ describe('combineMiddlwares', () => {
 						req.val++
 						next()
 					},
-				]))(req as Request, undefined as unknown as Response)
+				]))(req, undefined)
 			)
 		).toBe('error')
 		expect(req.val).toBe(3)
@@ -57,7 +57,7 @@ describe('combineMiddlwares', () => {
 					req.val += 3
 					next()
 				},
-			]))(req as Request, undefined as unknown as Response)
+			]))(req, undefined)
 		expect(req.val).toBe(5)
 	})
 })

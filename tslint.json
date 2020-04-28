@@ -193,7 +193,7 @@
 		"import-spacing": true,
 		"indent": {
 			"options": [
-				"spaces"
+				"tabs"
 			]
 		},
 		"jsdoc-format": true,

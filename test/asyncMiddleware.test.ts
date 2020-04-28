@@ -1,13 +1,13 @@
+// @ts-nocheck
 /* eslint-disable import/no-extraneous-dependencies */
 import asyncMiddleware from '../index'
-import {Request, Response} from 'express'
 
 describe('asyncMiddleware', () => {
 	test('should accept non async middleware', async () => {
 		const next = jest.fn()
 		await asyncMiddleware((req, res, next) => {
 			next()
-		})(null as unknown as Request, null as unknown as Response, next)
+		})(null, null, next)
 		expect(next.mock.calls).toEqual([[]])
 	})
 
@@ -16,7 +16,7 @@ describe('asyncMiddleware', () => {
 		await asyncMiddleware(async (req, res, next) => {
 			await Promise.resolve()
 			next()
-		})(null as unknown as Request, null as unknown as Response, next)
+		})(null, null, next)
 		expect(next.mock.calls).toEqual([[]])
 	})
 
@@ -25,7 +25,7 @@ describe('asyncMiddleware', () => {
 		await asyncMiddleware(async (req, res: any) => {
 			await Promise.resolve()
 			res()
-		})(null as unknown as Request, res as unknown as Response, jest.fn())
+		})(null, res, jest.fn())
 		expect(res.mock.calls).toEqual([[]])
 	})
 
@@ -33,7 +33,7 @@ describe('asyncMiddleware', () => {
 		const next = jest.fn()
 		await asyncMiddleware((async () => {
 			throw '123'
-		}))(null as unknown as Request, null as unknown as Response, next)
+		}))(null, null, next)
 		expect(next.mock.calls).toEqual([['123']])
 	})
 
@@ -41,7 +41,7 @@ describe('asyncMiddleware', () => {
 		const next = jest.fn()
 		await asyncMiddleware((
 			() => Promise.reject('123')
-		))(null as unknown as Request, null as unknown as Response, next)
+		))(null, null, next)
 		expect(next.mock.calls).toEqual([['123']])
 	})
 
@@ -49,7 +49,7 @@ describe('asyncMiddleware', () => {
 		const next = jest.fn()
 		await asyncMiddleware((async (req, res, next) => {
 			next('123')
-		}))(null as unknown as Request, null as unknown as Response, next)
+		}))(null, null, next)
 		expect(next.mock.calls).toEqual([['123']])
 	})
 
@@ -58,7 +58,7 @@ describe('asyncMiddleware', () => {
 		await asyncMiddleware((async (req, res, next) => {
 			next('123')
 			throw '456'
-		}))(null as unknown as Request, null as unknown as Response, next)
+		}))(null, null, next)
 		expect(next.mock.calls).toEqual([['123']])
 	})
 
@@ -67,7 +67,7 @@ describe('asyncMiddleware', () => {
 		await asyncMiddleware(((req, res, next) => new Promise(resolve => {
 			resolve('123')
 			next('456')
-		})))(null as unknown as Request, null as unknown as Response, next)
+		})))(null, null, next)
 		expect(next.mock.calls).toEqual([['456']])
 	})
 
@@ -76,7 +76,7 @@ describe('asyncMiddleware', () => {
 		await asyncMiddleware(((req, res, next) => new Promise((resolve, reject) => {
 			reject('123')
 			setTimeout(() => next('456'), 0)
-		})))(null as unknown as Request, null as unknown as Response, next)
+		})))(null, null, next)
 		expect(next.mock.calls).toEqual([['123']])
 	})
 })

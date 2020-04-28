@@ -28,8 +28,7 @@ export default asyncMiddleware
 
 type IRequestHandler = RequestHandler | IRequestHandlerArray
 
-interface IRequestHandlerArray extends ReadonlyArray<IRequestHandler> {
-}
+interface IRequestHandlerArray extends ReadonlyArray<IRequestHandler> {}
 
 /**
  * combine list of middlewares into 1 middlewares
@@ -60,10 +59,14 @@ export const combineMiddlewares = (
  * @return result/error promise
  */
 export const middlewareToPromise = (middleware: RequestHandler) => (req: Request, res: Response): Promise<undefined> => new Promise(
-	(resolve, reject) => middleware(req, res, err => {
-		if (err) reject(err)
-		else resolve()
-	})
+	(resolve, reject) => {
+		try {
+			middleware(req, res, err => {
+				if (err) reject(err)
+				else resolve()
+			})
+		} catch (e){} // tslint:disable-line:no-empty
+	}
 )
 
 /**

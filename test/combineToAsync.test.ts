@@ -1,5 +1,5 @@
+// @ts-nocheck
 import {combineToAsync} from '../index'
-import {Request, Response} from 'express'
 
 declare global {
 	namespace Express {
@@ -17,7 +17,7 @@ describe('combine to async', () => {
 		}, (req, res, next) => {
 			req.val += 2
 			next()
-		})(req as Request, undefined as unknown as Response)
+		})(req, undefined)
 		expect(req.val).toBe(4)
 	})
 })

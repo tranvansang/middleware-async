@@ -29,6 +29,8 @@
 		"jest"
 	],
 	"rules": {
+		"no-tabs": "off",
+		"indent": ["error", "tab"],
 		"no-irregular-whitespace": "off",
 		"comma-dangle": "off",
 		"function-paren-newline": "off",

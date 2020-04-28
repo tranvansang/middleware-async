@@ -112,12 +112,17 @@ exports.combineMiddlewares = function (first) {
  * @param middleware a single middleware
  * @return result/error promise
  */
-exports.middlewareToPromise = function (middleware) { return function (req, res) { return new Promise(function (resolve, reject) { return middleware(req, res, function (err) {
-    if (err)
-        reject(err);
-    else
-        resolve();
-}); }); }; };
+exports.middlewareToPromise = function (middleware) { return function (req, res) { return new Promise(function (resolve, reject) {
+    try {
+        middleware(req, res, function (err) {
+            if (err)
+                reject(err);
+            else
+                resolve();
+        });
+    }
+    catch (e) { } // tslint:disable-line:no-empty
+}); }; };
 /**
  * extended version of middlewareToPromise which allows one or more middleware / array of middlewares
  * @param args
