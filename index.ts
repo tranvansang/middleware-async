@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response} from 'express'
 
-export const asyncMiddleware = (middleware: (req: Request, res: Response, next: NextFunction) => Promise<any> | any): RequestHandler => (
+export const asyncMiddleware = (middleware: (req: Request, res: Response, next: NextFunction) => Promise<any> | any) => (
 	req: Request, res: Response, next: NextFunction
 ) => {
 	(async () => {
