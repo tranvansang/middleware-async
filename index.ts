@@ -46,7 +46,7 @@ export const combineMiddlewares = (
 	return (req: Request, res: Response, next: NextFunction) => {
 		if (!first) return next()
 			;
-		(first as RequestHandler)(req, res, err => err
+		(first as RequestHandler)(req, res, (err: any) => err
 			? next(err)
 			: combineMiddlewares(...middlewares)(req, res, next)
 		)
@@ -61,7 +61,7 @@ export const combineMiddlewares = (
 export const middlewareToPromise = (middleware: RequestHandler) => (req: Request, res: Response): Promise<undefined> => new Promise(
 	(resolve, reject) => {
 		try {
-			middleware(req, res, err => {
+			middleware(req, res, (err: any) => {
 				if (err) reject(err)
 				else resolve()
 			})
