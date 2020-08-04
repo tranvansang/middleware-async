@@ -64,7 +64,7 @@ export const middlewareToPromise = (middleware: RequestHandler) => (req: Request
 				if (err) reject(err)
 				else resolve()
 			})
-		} catch (e){} // tslint:disable-line:no-empty
+		} catch (e){}
 	}
 )
 
