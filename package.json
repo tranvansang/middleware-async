@@ -7,6 +7,10 @@
 	"author": "Tran Sang <tranvansangk41@gmail.com>",
 	"license": "MIT",
 	"private": false,
+	"files": [
+		"index.d.ts",
+		"index.js"
+	],,
 	"scripts": {
 		"build": "yarn tsc -d index.ts",
 		"test": "yarn jest",
