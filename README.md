@@ -16,12 +16,12 @@ app.use(async (req, res, next) => {
 })
 ```
 
-The `next()` will be executed after `User.findById(...).exec()` is fulfilled because express allow handler returning Promise.
+The `next()` will be executed after `User.findById(...).exec()` is fulfilled because express allow middlewares returning a promise.
 
-However, express does not support if the promise returned by the handler is rejected.
-The following handlers will never be called.
+However, express does not support if the promise returned by the middleware is rejected.
+The following middlewares will never be called, and the response will never be returned to the client.
 
-The solution is simple by wrapping the handler with
+The solution is simple by wrapping the middleware with
 
 ```javascript
 import {asyncMiddleware} from 'middleware-async'
@@ -68,11 +68,26 @@ yarn add middleware-async
 
 ## API
 
-- `asyncMiddleware(middlware)`: returns a handler that covers error thrown or error that is rejected by handler via the `next` function. The next function is called at most once.
-- `combineMiddlewares(list of handlers or list of handlers with any depth)`: combine many handlers into one handler. Very useful for testing
-You can combine your handlers like `combineMiddlewares([mdw1, mdw2], [[mdw3], [mdw4, [mdw5, mdw6]], mdw7], mdw8)`. The function will take care of expanding parameters.
-- `middlewareToPromise`: convert express-style handler into Promise by appending the next handler to the input handler.
+- `asyncMiddleware(middlware)`: returns a middleware that covers the error thrown (`throw err`) or rejected (`next(err)`) by middlewares. The next parameter of the returned middleware is called at most once.
+
+Sample usage:
+```
+app.use(asyncMiddleware(async (req, res, next) => {/*middleware code*/}))
+```
+
+- `combineMiddlewares(middleware, list of middlewares, or list of middlewares with any depth)`: combine one or many middlewares into one middlware. Very useful for testing.
+
+You can use this API like `combineMiddlewares(mdw)` or `combineMiddlewares([mdw1, mdw2], [[mdw3], [mdw4, [mdw5, mdw6]], mdw7], mdw8)`. The function will take care of expanding parameters.
+
+Note that this function does not wrap the middelware with `asyncMiddleware`. If the middleware returns a promise, you need to wrap the middleware manually otherwise the error will never be caught.
+
+- `middlewareToPromise`: convert express-style middlware to a function which returns a promise.
+
+`await middlewareToPromise(mdw)(req, res)` is rejected if the middleware `mdw` throws error (in **express/connect-like** style), otherwise the promise is resolved normally.
+
 - `combineToAsync`: combination of `middleewareToPromise` and `combineMiddlewares`
+
+Example: `await combineToAsync(mdw)(req, res)`
 
 ## Sample usages
 

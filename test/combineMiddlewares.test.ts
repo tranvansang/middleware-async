@@ -23,7 +23,7 @@ describe('combineMiddlwares', () => {
 				req.val += 2
 				next()
 			},
-		]))(req, undefined)
+		]))(req)
 		expect(req.val).toBe(4)
 	})
 
@@ -39,7 +39,7 @@ describe('combineMiddlwares', () => {
 						req.val++
 						next()
 					},
-				]))(req, undefined)
+				]))(req)
 			)
 		).toBe('error')
 		expect(req.val).toBe(3)
@@ -57,7 +57,21 @@ describe('combineMiddlwares', () => {
 					req.val += 3
 					next()
 				},
-			]))(req, undefined)
+			]))(req)
 		expect(req.val).toBe(5)
+	})
+
+	test('should ignore if middlware return a rejected promise', async () => {
+		expect(
+			await flipPromise(middlewareToPromise(combineMiddlewares([
+					async (req, res, next) => {
+						setTimeout(() => {
+							next('error 1')
+						}, 500)
+						throw 'error 2'
+					},
+				]))()
+			)
+		).toBe('error 1')
 	})
 })

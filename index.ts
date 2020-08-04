@@ -45,8 +45,7 @@ export const combineMiddlewares = (
 	while (Array.isArray(first)) [first, ...middlewares] = [...first, ...middlewares]
 	return (req: Request, res: Response, next: NextFunction) => {
 		if (!first) return next()
-			;
-		(first as RequestHandler)(req, res, err => err
+		;(first as RequestHandler)(req, res, err => err
 			? next(err)
 			: combineMiddlewares(...middlewares)(req, res, next)
 		)
@@ -54,7 +53,7 @@ export const combineMiddlewares = (
 }
 
 /**
- * mimic the next middleware
+ * mimic the next middleware. Ignore rejected error if the handler returns a promise.
  * @param middleware a single middleware
  * @return result/error promise
  */
