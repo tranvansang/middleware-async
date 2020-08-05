@@ -61,3 +61,5 @@ typings/
 .next
 .idea
 coverage
+index.d.ts
+index.js

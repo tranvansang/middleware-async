@@ -1,44 +1,38 @@
 {
 	"extends": [
 		"airbnb-base",
-		"eslint:recommended"
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended"
 	],
 	"settings": {
+		"import/extensions": [".js",".jsx",".ts",".tsx", "css", "scss"],
 		"import/resolver": {
 			"node": {
-				"extensions": [
-					".js",
-					".jsx",
-					".ts",
-					".tsx"
-				]
+				"extensions": [".js", ".jsx", ".ts", ".tsx", "css", "scss"]
 			}
-		},
-		"react": {
-			"version": "detect"
 		}
 	},
 	"env": {
 		"node": true,
 		"es6": true,
 		"browser": true,
-		"jest": true
+		"jest": true,
+		"serviceworker": true
 	},
 	"plugins": [
 		"babel",
-		"jest"
+		"jest",
+		"@typescript-eslint"
 	],
 	"rules": {
 		"no-tabs": "off",
-		"indent": ["error", "tab"],
-		"no-irregular-whitespace": "off",
+		"no-irregular-whitespace": "warn",
 		"comma-dangle": "off",
 		"function-paren-newline": "off",
 		"no-param-reassign": "off",
-		"semi": [
-			"error",
-			"never"
-		],
+		"semi": ["error", "never"],
+		"semi-style": ["error", "first"],
+		"indent": ["error", "tab"],
 		"import/first": "off",
 		"import/order": "off",
 		"import/prefer-default-export": "off",
@@ -51,16 +45,8 @@
 		"lines-between-class-members": "off",
 		"object-curly-newline": "off",
 		"consistent-return": "off",
-		"max-len": [
-			"error",
-			{
-				"code": 120
-			}
-		],
-		"arrow-parens": [
-			"error",
-			"as-needed"
-		],
+		"max-len": ["error", {"code":	120}],
+		"arrow-parens": ["error", "as-needed"],
 		"no-async-promise-executor": "off",
 		"no-confusing-arrow": "off",
 		"no-nested-ternary": "off",
@@ -71,12 +57,34 @@
 		"prefer-destructuring": "off",
 		"no-mixed-operators": "off",
 		"no-return-await": "off",
-		"no-plusplus": "off"
+		"no-plusplus": "off",
+		"no-await-in-loop": "off",
+		"no-void": "off",
+		"no-continue": "off",
+		"import/extensions": [
+			"error",
+			"ignorePackages",
+			{
+				"js": "never",
+				"jsx": "never",
+				"ts": "never",
+				"tsx": "never",
+				"css": "never",
+				"scss": "never",
+				"scss?no-local": "never"
+			}
+		],
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/explicit-module-boundary-types": "off"
 	},
-	"parser": "babel-eslint",
+	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
+		"useJSXTextNode": true,
+		"ecmaVersion": 6,
+		"sourceType": "module",
 		"ecmaFeatures": {
-			"legacyDecorators": true
+			"modules": true,
+			"jsx": true
 		}
 	},
 	"globals": {
