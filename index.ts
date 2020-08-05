@@ -48,7 +48,7 @@ export const combineMiddlewares = (
 	while (Array.isArray(first)) [first, ...middlewares] = [...first, ...middlewares]
 	return (req: Request, res: Response, next: NextFunction) => {
 		if (!first) return next()
-		;(first as RequestHandler)(req, res, (err: any) => err
+		;(first as RequestHandler)(req, res, (err?: any) => err
 			? next(err)
 			: combineMiddlewares(...middlewares)(req, res, next)
 		)
