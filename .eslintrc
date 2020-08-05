@@ -31,6 +31,7 @@
 		"function-paren-newline": "off",
 		"no-param-reassign": "off",
 		"semi": ["error", "never"],
+		"semi-style": ["error", "first"],
 		"indent": ["error", "tab"],
 		"import/first": "off",
 		"import/order": "off",

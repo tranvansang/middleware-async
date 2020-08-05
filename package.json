@@ -15,7 +15,7 @@
 		"build": "yarn tsc -d index.ts",
 		"test": "yarn jest",
 		"coverage": "yarn jest --coverage",
-		"lint": "yarn eslint **/*.ts"
+		"lint": "yarn eslint index.ts"
 	},
 	"keywords": [
 		"connect",

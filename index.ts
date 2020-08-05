@@ -1,6 +1,9 @@
+// eslint-disable-next-line import/no-unresolved
 import {NextFunction, Request, RequestHandler, Response} from 'express'
 
-export const asyncMiddleware = (middleware: (req: Request, res: Response, next: NextFunction) => Promise<any> | any) => (
+export const asyncMiddleware = (
+	middleware: (req: Request, res: Response, next: NextFunction) => Promise<any> | any
+) => (
 	req: Request, res: Response, next: NextFunction
 ) => {
 	(async () => {
@@ -28,7 +31,7 @@ export default asyncMiddleware
 
 type IRequestHandler = RequestHandler | IRequestHandlerArray
 
-interface IRequestHandlerArray extends ReadonlyArray<IRequestHandler> {}
+type IRequestHandlerArray = ReadonlyArray<IRequestHandler>
 
 /**
  * combine list of middlewares into 1 middlewares
@@ -57,7 +60,11 @@ export const combineMiddlewares = (
  * @param middleware a single middleware
  * @return result/error promise
  */
-export const middlewareToPromise = (middleware: RequestHandler) => (req: Request, res: Response): Promise<undefined> => new Promise(
+export const middlewareToPromise = (
+	middleware: RequestHandler
+) => (
+	req: Request, res: Response
+): Promise<undefined> => new Promise(
 	(resolve, reject) => {
 		try {
 			middleware(req, res, err => {
