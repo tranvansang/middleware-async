@@ -24,7 +24,7 @@ describe('middlewareToPromise', () => {
 		)).toBe('error')
 	})
 
-	test('should ignore if handler throws error. compatible to express <= 4.x. With express >= 5.0, this test should fail', async () => {
+	test('should ignore if middleware throws error. compatible to express <= 4.x. With express >= 5.0, this test should fail', async () => {
 		await Promise.race([
 			new Promise(resolve => setTimeout(resolve, 500)),
 			middlewareToPromise(() => {
@@ -32,7 +32,7 @@ describe('middlewareToPromise', () => {
 			})()
 		])
 	})
-	xtest('should handle if handler throws error. compatible to express >= 5.0. With express <= 4.x, this test should fail', async () => {
+	xtest('should handle if middleware throws error. compatible to express >= 5.0. With express <= 4.x, this test should fail', async () => {
 		await flipPromise(middlewareToPromise(() => {
 			throw new Error('hi')
 		})())

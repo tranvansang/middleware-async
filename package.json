@@ -10,7 +10,7 @@
 	"files": [
 		"index.d.ts",
 		"index.js"
-	],,
+	],
 	"scripts": {
 		"build": "yarn tsc -d index.ts",
 		"test": "yarn jest",

@@ -64,7 +64,8 @@ export const middlewareToPromise = (middleware: RequestHandler) => (req: Request
 				if (err) reject(err)
 				else resolve()
 			})
-		} catch (e){}
+			// eslint-disable-next-line no-empty
+		} catch {}
 	}
 )
 
