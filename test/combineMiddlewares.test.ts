@@ -62,9 +62,7 @@ describe('combineMiddlwares', () => {
 		expect(reqParam.val).toBe(5)
 	})
 
-	// jest unconditionally processes unhandled promises. There is no way to make this test success
-	// https://github.com/facebook/jest/issues/10364
-	xtest('should ignore if middlware return a rejected promise', async () => {
+	test('should ignore if middlware return a rejected promise', async () => {
 		expect(
 			await flipPromise(middlewareToPromise(combineMiddlewares([
 				async (req, res, next) => {

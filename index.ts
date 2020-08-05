@@ -48,10 +48,13 @@ export const combineMiddlewares = (
 	while (Array.isArray(first)) [first, ...middlewares] = [...first, ...middlewares]
 	return (req: Request, res: Response, next: NextFunction) => {
 		if (!first) return next()
-		;(first as RequestHandler)(req, res, (err?: any) => err
+		// jest unconditionally processes unhandled promises. There is no way to make a jest test success
+		// unless catching the rejected promise
+		// https://github.com/facebook/jest/issues/10364
+		Promise.resolve((first as RequestHandler)(req, res, (err?: any) => err
 			? next(err)
 			: combineMiddlewares(...middlewares)(req, res, next)
-		)
+		)).catch(() => void 0)
 	}
 }
 
