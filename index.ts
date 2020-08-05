@@ -67,7 +67,7 @@ export const middlewareToPromise = (
 ): Promise<undefined> => new Promise(
 	(resolve, reject) => {
 		try {
-			middleware(req, res, (err: any) => {
+			middleware(req, res, (err?: any) => {
 				if (err) reject(err)
 				else resolve()
 			})
