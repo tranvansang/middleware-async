@@ -15,6 +15,7 @@
 		"build": "yarn tsc -d index.ts",
 		"test": "yarn jest",
 		"coverage": "yarn jest --coverage",
+		"clean": "rm -rf index.d.ts index.js",
 		"lint": "yarn eslint index.ts"
 	},
 	"keywords": [
