@@ -83,11 +83,13 @@ Note that this function does not wrap the middelware with `asyncMiddleware`. If 
 
 - `middlewareToPromise`: convert express-style middlware to a function which returns a promise.
 
-`await middlewareToPromise(mdw)(req, res)` is rejected if the middleware `mdw` throws error (in **express/connect-like** style), otherwise the promise is resolved normally.
+`await middlewareToPromise(mdw)(req, res)` is rejected if the middleware `mdw` throws error (in **express/connect-like style via calling next(err)**), otherwise the promise is resolved normally.
 
 - `combineToAsync`: combination of `middleewareToPromise` and `combineMiddlewares`
 
 Example: `await combineToAsync(mdw)(req, res)`
+
+Besides, I highly recommend using [flip-promise](https://www.npmjs.com/package/flip-promise) package to assert a rejected promise.
 
 ## Sample usages
 
