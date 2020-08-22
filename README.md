@@ -24,7 +24,7 @@ The following middlewares will never be called, and the response will never be r
 The solution is simple by wrapping the middleware with
 
 ```javascript
-import {asyncMiddleware} from 'middleware-async'
+const {asyncMiddleware} = require('middleware-async')
 app.use(asyncMiddleware(async (req, res, next) => {
   req.user = await User.findById(req.params.id).exec()
   next()  
@@ -35,7 +35,7 @@ Note that once the `next` function is called, following errors will not be throw
 Example:
 
 ```javascript
-import {asyncMiddleware} from 'middleware-async'
+const {asyncMiddleware} = require('middleware-async')
 app.use(asyncMiddleware(async (req, res, next) => {
   next()  
   throw new Error('my error')
@@ -46,7 +46,7 @@ the error `new Error('my error')` will not be thrown because the `next` function
 Or
 
 ```javascript
-import {asyncMiddleware} from 'middleware-async'
+const {asyncMiddleware} = require('middleware-async')
 app.use(asyncMiddleware((req, res, next) => {
   return Promise((resolve, reject)=> {
     reject()
@@ -94,7 +94,7 @@ Besides, I highly recommend using [flip-promise](https://www.npmjs.com/package/f
 ## Sample usages
 
 ```javascript
-import {asyncMiddleware, combineMiddlewares, combineToAsync, middlewareToPromise} from 'middleeware-async'
+const {asyncMiddleware, combineMiddlewares, combineToAsync, middlewareToPromise} = require('middleeware-async')
 
 describe('combineMiddlwares', () => {
   test('should go through all middlewares', async () => {
