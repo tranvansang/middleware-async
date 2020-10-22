@@ -29,8 +29,8 @@ export const asyncMiddleware = (
  */
 export default asyncMiddleware
 
+// eslint-disable-next-line no-use-before-define
 type IRequestHandler = RequestHandler | IRequestHandlerArray
-
 type IRequestHandlerArray = ReadonlyArray<IRequestHandler>
 
 /**
@@ -58,8 +58,10 @@ export const combineMiddlewares = (
 	}
 }
 
+let expressMajorVersion = 4
+export const mockExpressMajorVersion = (v: number) => expressMajorVersion = v
 /**
- * mimic the next middleware. Ignore rejected error if the handler returns a promise.
+ * mimic the next middleware. For webpack <= 4.x, ignore the rejected error if the handler returns a rejected promise.
  * @param middleware a single middleware
  * @return result/error promise
  */
@@ -67,15 +69,16 @@ export const middlewareToPromise = (
 	middleware: RequestHandler
 ) => (
 	req: Request, res: Response
-): Promise<undefined> => new Promise(
-	(resolve, reject) => {
+): Promise<void> => new Promise(
+	async (resolve, reject) => {
 		try {
-			middleware(req, res, (err?: any) => {
+			await middleware(req, res, (err?: any) => {
 				if (err) reject(err)
 				else resolve()
 			})
-			// eslint-disable-next-line no-empty
-		} catch {}
+		} catch (e) {
+			if (expressMajorVersion >= 5) reject(e)
+		}
 	}
 )
 

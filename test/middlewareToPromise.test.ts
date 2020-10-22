@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 /* eslint-disable import/no-extraneous-dependencies */
-import {middlewareToPromise} from '../index'
+import {middlewareToPromise, mockExpressMajorVersion} from '../index'
 import flipPromise from 'flip-promise'
 
 describe('middlewareToPromise', () => {
@@ -33,7 +33,8 @@ describe('middlewareToPromise', () => {
 			})()
 		])
 	})
-	xtest('should handle if middleware throws error. compatible to express >= 5.0. With express <= 4.x, this test should fail', async () => {
+	test('should handle if middleware throws error. compatible to express >= 5.0. With express <= 4.x, this test should fail', async () => {
+		mockExpressMajorVersion(5)
 		await flipPromise(middlewareToPromise(() => {
 			throw new Error('hi')
 		})())

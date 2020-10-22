@@ -5,10 +5,10 @@
 		"plugin:@typescript-eslint/recommended"
 	],
 	"settings": {
-		"import/extensions": [".js",".jsx",".ts",".tsx", "css", "scss"],
+		"import/extensions": [".js", ".ts", ".d.ts"],
 		"import/resolver": {
 			"node": {
-				"extensions": [".js", ".jsx", ".ts", ".tsx", "css", "scss"]
+				"extensions": [".js", ".ts", ".d.ts"]
 			}
 		}
 	},
@@ -32,10 +32,7 @@
 		"no-param-reassign": "off",
 		"semi": ["error", "never"],
 		"semi-style": ["error", "first"],
-		"indent": ["error", "tab"],
-		"import/first": "off",
-		"import/order": "off",
-		"import/prefer-default-export": "off",
+		"indent": ["error", "tab", {"SwitchCase": 1}],
 		"object-curly-spacing": "off",
 		"padded-blocks": "off",
 		"spaced-comment": "off",
@@ -45,7 +42,7 @@
 		"lines-between-class-members": "off",
 		"object-curly-newline": "off",
 		"consistent-return": "off",
-		"max-len": ["error", {"code":	120}],
+		"max-len": ["error", {"code": 120}],
 		"arrow-parens": ["error", "as-needed"],
 		"no-async-promise-executor": "off",
 		"no-confusing-arrow": "off",
@@ -61,6 +58,13 @@
 		"no-await-in-loop": "off",
 		"no-void": "off",
 		"no-continue": "off",
+		"camelcase": "off",
+		"eol-last": "off",
+		"no-bitwise": "off",
+		"no-shadow": "off",
+		"import/first": "off",
+		"import/order": "off",
+		"import/prefer-default-export": "off",
 		"import/extensions": [
 			"error",
 			"ignorePackages",
@@ -69,13 +73,15 @@
 				"jsx": "never",
 				"ts": "never",
 				"tsx": "never",
-				"css": "never",
-				"scss": "never",
-				"scss?no-local": "never"
+				"css": "always",
+				"scss": "always",
+				"d.ts": "never"
 			}
 		],
+		"@typescript-eslint/no-shadow": "error",
 		"@typescript-eslint/no-explicit-any": "off",
-		"@typescript-eslint/explicit-module-boundary-types": "off"
+		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"@typescript-eslint/no-non-null-assertion": "off"
 	},
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {

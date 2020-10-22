@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 /* eslint-disable import/no-extraneous-dependencies */
-import {combineMiddlewares, middlewareToPromise} from '../index'
+import asyncMiddleware, {combineMiddlewares, combineToAsync, middlewareToPromise} from '../index'
 import flipPromise from 'flip-promise'
 
 declare global {
@@ -12,7 +12,7 @@ declare global {
 	}
 }
 
-describe('combineMiddlwares', () => {
+describe('combineMiddlewares', () => {
 	test('should go through all middlewares', async () => {
 		const reqParam = {val: 1}
 		await middlewareToPromise(combineMiddlewares([
@@ -62,7 +62,7 @@ describe('combineMiddlwares', () => {
 		expect(reqParam.val).toBe(5)
 	})
 
-	test('should ignore if middlware return a rejected promise', async () => {
+	test('should ignore if middleware return a rejected promise', async () => {
 		expect(
 			await flipPromise(middlewareToPromise(combineMiddlewares([
 				async (req, res, next) => {
@@ -73,5 +73,38 @@ describe('combineMiddlwares', () => {
 				},
 			]))())
 		).toBe('error 1')
+	})
+
+	test('execution order', async () => {
+		let a = ''
+		await combineToAsync(
+			asyncMiddleware(async (req, res, next) => {
+				a += '1'
+				await next()
+				a += '2'
+			}),
+			asyncMiddleware(async (req, res, next) => {
+				a += '3'
+				await next()
+				a += '4'
+			})
+		)()
+		expect(a).toBe('1342')
+	})
+	test('execution order without asyncMiddleware', async () => {
+		let a = ''
+		await combineToAsync(
+			async (req, res, next) => {
+				a += '1'
+				await next()
+				a += '2'
+			},
+			async (req, res, next) => {
+				a += '3'
+				await next()
+				a += '4'
+			}
+		)()
+		expect(a).toBe('1342')
 	})
 })

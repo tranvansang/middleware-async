@@ -32,7 +32,7 @@ app.use(asyncMiddleware(async (req, res, next) => {
 ```
 
 Note that once the `next` function is called, following errors will not be thrown, and vice versa.
-Example:
+Sample usage:
 
 ```javascript
 const {asyncMiddleware} = require('middleware-async')
@@ -68,35 +68,35 @@ yarn add middleware-async
 
 ## API
 
-- `asyncMiddleware(middlware)`: returns a middleware that covers the error thrown (`throw err`) or rejected (`next(err)`) by middlewares. The next parameter of the returned middleware is called at most once.
+- `asyncMiddleware(middleware)`: returns a middleware that covers the error thrown (`throw err`) or rejected (`next(err)`) by middlewares. The next parameter of the returned middleware is called at most once.
 
 Sample usage:
 ```
 app.use(asyncMiddleware(async (req, res, next) => {/*middleware code*/}))
 ```
 
-- `combineMiddlewares(middleware, list of middlewares, or list of middlewares with any depth)`: combine one or many middlewares into one middlware. Very useful for testing.
+- `combineMiddlewares(middleware, list of middlewares, or list of middlewares with any depth)`: combine one or many middlewares into one middleware. Very useful for testing.
 
-You can use this API like `combineMiddlewares(mdw)` or `combineMiddlewares([mdw1, mdw2], [[mdw3], [mdw4, [mdw5, mdw6]], mdw7], mdw8)`. The function will take care of expanding parameters.
+You can use this function with any combination of middleware or array of middlewares, for example `combineMiddlewares(mdw)` or `combineMiddlewares([mdw1, mdw2], [[mdw3], [mdw4, [mdw5, mdw6]], mdw7], mdw8)`. The function will take care of expanding parameters.
 
-Note that this function does not wrap the middelware with `asyncMiddleware`. If the middleware returns a promise, you need to wrap the middleware manually otherwise the error will never be caught.
+Note that this function does not wrap the middleware with `asyncMiddleware`. If the middleware returns a promise, you need to wrap the middleware manually otherwise the error will never be caught.
 
-- `middlewareToPromise`: convert express-style middlware to a function which returns a promise.
+- `middlewareToPromise`: convert express-style middleware to a function which returns a promise.
 
 `await middlewareToPromise(mdw)(req, res)` is rejected if the middleware `mdw` throws error (in **express/connect-like style via calling next(err)**), otherwise the promise is resolved normally.
 
-- `combineToAsync`: combination of `middleewareToPromise` and `combineMiddlewares`
+- `combineToAsync`: a combination of `middlewareToPromise` and `combineMiddlewares`.
 
-Example: `await combineToAsync(mdw)(req, res)`
+Sample usage: `await combineToAsync(mdw1, mdw2)(req, res)`
 
 Besides, I highly recommend using [flip-promise](https://www.npmjs.com/package/flip-promise) package to assert a rejected promise.
 
 ## Sample usages
 
 ```javascript
-const {asyncMiddleware, combineMiddlewares, combineToAsync, middlewareToPromise} = require('middleeware-async')
+const {asyncMiddleware, combineMiddlewares, combineToAsync, middlewareToPromise} = require('middleware-async')
 
-describe('combineMiddlwares', () => {
+describe('combineMiddlewares', () => {
   test('should go through all middlewares', async () => {
     const req = {val: 0}
     await combineToAsync([
