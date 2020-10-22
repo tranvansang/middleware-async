@@ -3,7 +3,7 @@ module.exports = {
 	moduleFileExtensions: ['ts', 'js'],
 	verbose: true,
 	collectCoverageFrom: ['<rootDir>/index.ts'],
-	transform: {'^.+\\.(ts)$': 'babel-jest',},
+	transform: {'^.+\\.(ts)$': 'babel-jest'},
 	testMatch: ['<rootDir>/test/*.test.ts'],
 	testEnvironment: 'node'
 }

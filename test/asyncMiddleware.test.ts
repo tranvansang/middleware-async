@@ -30,6 +30,13 @@ describe('asyncMiddleware', () => {
 		expect(res.mock.calls).toEqual([[]])
 	})
 
+	test('preserve synchronous middleware', async () => {
+		const next = jest.fn()
+		asyncMiddleware((() => {
+			throw '123'
+		}))(null, null, next)
+		expect(next.mock.calls).toEqual([['123']])
+	})
 	test('should catch error', async () => {
 		const next = jest.fn()
 		await asyncMiddleware((async () => {

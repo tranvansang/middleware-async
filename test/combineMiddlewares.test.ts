@@ -81,30 +81,31 @@ describe('combineMiddlewares', () => {
 			asyncMiddleware(async (req, res, next) => {
 				a += '1'
 				await next()
+				await new Promise(resolve => setTimeout(resolve, 500))
 				a += '2'
 			}),
 			asyncMiddleware(async (req, res, next) => {
 				a += '3'
 				await next()
+				await new Promise(resolve => setTimeout(resolve, 700))
 				a += '4'
 			})
 		)()
-		expect(a).toBe('1342')
+		expect(a).toBe('13')
 	})
-	test('execution order without asyncMiddleware', async () => {
-		let a = ''
-		await combineToAsync(
-			async (req, res, next) => {
-				a += '1'
-				await next()
-				a += '2'
-			},
-			async (req, res, next) => {
-				a += '3'
-				await next()
-				a += '4'
-			}
-		)()
-		expect(a).toBe('1342')
+
+	test('preserve synchronous error thrown by middleware', async () => {
+		let err
+		try {
+			combineMiddlewares(
+				(req, res, next) => next(),
+				() => {
+					throw new Error('1')
+				}
+			)()
+		} catch (e) {
+			err = e
+		}
+		expect(err).not.toBeUndefined()
 	})
 })

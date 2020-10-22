@@ -1,0 +1,13 @@
+{
+  "name": "express5",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Tran Sang <tr@nsang.me>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "express": "^5.0.0-alpha.8",
+    "jest": "^26.6.0",
+    "node-fetch": "^2.6.1"
+  }
+}
