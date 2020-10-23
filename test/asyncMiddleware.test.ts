@@ -87,4 +87,9 @@ describe('asyncMiddleware', () => {
 		})))(null, null, next)
 		expect(next.mock.calls).toEqual([['123']])
 	})
+	test('dont trigger the next function', async () => {
+		const next = jest.fn()
+		await asyncMiddleware((() => Promise.resolve()))(null, null, next)
+		expect(next.mock.calls).toEqual([])
+	})
 })

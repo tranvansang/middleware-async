@@ -22,13 +22,12 @@ export const asyncMiddleware = (
 	} catch (err) {
 		return cb(err)
 	}
-	if (isPromise(maybePromise)) (async () => {
+	if (isPromise(maybePromise)) return (async () => {
 		try {
 			await maybePromise
 		} catch (err) {
 			return cb(err)
 		}
-		cb()
 	})()
 })()
 

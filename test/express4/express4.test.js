@@ -1,3 +1,4 @@
+const {asyncMiddleware, combineMiddlewares} = require('../../index')
 const fetch = require('node-fetch')
 const express = require('express')
 const {createServer} = require('http')
@@ -49,5 +50,47 @@ describe('express 4', () => {
 		)
 		const res = await fetch(url)
 		expect(await res.text()).toBe('2')
+	})
+	test('simple rejected async middleware', async () => {
+		app.get(
+			'/',
+			asyncMiddleware(async () => {
+				throw new Error('1')
+			}),
+			(err, req, res, next) => {
+				res.send('2')
+			},
+		)
+		const res = await fetch(url)
+		expect(await res.text()).toBe('2')
+	})
+	test('simple resolved async middleware', async () => {
+		app.get(
+			'/',
+			asyncMiddleware(async (req, res) => {
+				await new Promise(r => setTimeout(r, 100))
+				res.status(200).send('1')
+			}),
+		)
+		const res = await fetch(url)
+		expect(await res.text()).toBe('1')
+	})
+	test('simple middleware combination', async () => {
+		app.get(
+			'/',
+			combineMiddlewares(
+				(req, res, next) => {
+					req.a = '1'
+					next()
+				},
+				(req, res, next) => {
+					req.a += '2'
+					next()
+				},
+			),
+			(req, res) => res.status(200).send(req.a)
+		)
+		const res = await fetch(url)
+		expect(await res.text()).toBe('12')
 	})
 })
