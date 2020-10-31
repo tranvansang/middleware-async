@@ -7,7 +7,7 @@ A handy tool to write async/promise style middleware for express, connect-like.
 
 ## Why is this tool needed?
 
-Lets check at this code
+Let's check this code
 
 ```javascript
 app.use(async (req, res, next) => {
@@ -16,7 +16,7 @@ app.use(async (req, res, next) => {
 })
 ```
 
-The `next()` will be executed after `User.findById(...).exec()` is fulfilled because express allow middlewares returning a promise.
+The `next()` will be executed after `User.findById(...).exec()` is fulfilled because express allows middlewares returning a promise.
 
 However, express does not support if the promise returned by the middleware is rejected.
 The following middlewares will never be called, and the response will never be returned to the client.
@@ -79,11 +79,11 @@ app.use(asyncMiddleware(async (req, res, next) => {/*middleware code*/}))
 
 You can use this function with any combination of middleware or array of middlewares, for example `combineMiddlewares(mdw)` or `combineMiddlewares([mdw1, mdw2], [[mdw3], [mdw4, [mdw5, mdw6]], mdw7], mdw8)`. The function will take care of expanding parameters.
 
-Note that this function does not wrap the middleware with `asyncMiddleware`. If the middleware returns a promise, you need to wrap the middleware manually otherwise the error will never be caught.
+Note that this function does not wrap the middleware with `asyncMiddleware`. If the middleware returns a promise, you need to manually wrap the middleware; otherwise, the error will never be caught.
 
-- `middlewareToPromise`: convert express-style middleware to a function which returns a promise.
+- `middlewareToPromise`: convert express-style middleware to a function that returns a promise.
 
-`await middlewareToPromise(mdw)(req, res)` is rejected if the middleware `mdw` throws error (in **express/connect-like style via calling next(err)**), otherwise the promise is resolved normally.
+`await middlewareToPromise(mdw)(req, res)` is rejected if the middleware `mdw` throws an error (in **express/connect-like style via calling next(err)**), otherwise the promise is resolved normally.
 
 - `combineToAsync`: a combination of `middlewareToPromise` and `combineMiddlewares`.
 
