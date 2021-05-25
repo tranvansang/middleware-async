@@ -1,35 +1,41 @@
 // eslint-disable-next-line import/no-unresolved
-import {NextFunction, Request, RequestHandler, Response} from 'express'
+import type {NextFunction, Request, RequestHandler, Response} from 'express'
 
-const isPromise = (maybePromise: any) => !!maybePromise
+const isPromise = (maybePromise: any): maybePromise is typeof Promise => !!maybePromise
 	&& (typeof maybePromise === 'object' || typeof maybePromise === 'function')
 	&& typeof maybePromise.then === 'function'
 
-export const asyncMiddleware = (
-	middleware: (req: Request, res: Response, next: NextFunction) => Promise<any> | any
+export const asyncMiddleware = <P, ResBody, ReqBody, ReqQuery, Locals>(
+	middleware: (
+		req: Request<P, ResBody, ReqBody, ReqQuery, Locals>,
+		res: Response<ResBody, Locals>,
+		next: NextFunction
+	) => Promise<any> | any
 ) => (
-	req: Request, res: Response, next: NextFunction
-) => (() => {
-	let called = false
-	const cb = <T>(...args: ReadonlyArray<T>) => {
-		if (called) return
-		called = true
-		return next(...args)
-	}
-	let maybePromise
-	try {
-		maybePromise = middleware(req, res, cb)
-	} catch (err) {
-		return cb(err)
-	}
-	if (isPromise(maybePromise)) return (async () => {
+		req: Request<P, ResBody, ReqBody, ReqQuery, Locals>,
+		res: Response<ResBody, Locals>,
+		next: NextFunction
+	) => (() => {
+		let called = false
+		const cb = <T>(...args: ReadonlyArray<T>) => {
+			if (called) return
+			called = true
+			return next(...args)
+		}
+		let maybePromise
 		try {
-			await maybePromise
+			maybePromise = middleware(req, res, cb)
 		} catch (err) {
 			return cb(err)
 		}
+		if (isPromise(maybePromise)) return (async () => {
+			try {
+				await maybePromise
+			} catch (err) {
+				return cb(err)
+			}
+		})()
 	})()
-})()
 
 /**
  * wrap async function to connect-like middleware
@@ -39,9 +45,12 @@ export const asyncMiddleware = (
  */
 export default asyncMiddleware
 
+type IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals> = RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
 // eslint-disable-next-line no-use-before-define
-type IRequestHandler = RequestHandler | IRequestHandlerArray
-type IRequestHandlerArray = ReadonlyArray<IRequestHandler>
+	| IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals>
+type IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals> = ReadonlyArray<
+	IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
+	>
 
 /**
  * combine list of middlewares into 1 middlewares
@@ -51,13 +60,17 @@ type IRequestHandlerArray = ReadonlyArray<IRequestHandler>
  * @param middlewares
  * @returns {Function}
  */
-export const combineMiddlewares = (
-	first?: IRequestHandler,
-	...middlewares: ReadonlyArray<IRequestHandler>
+export const combineMiddlewares = <P, ResBody, ReqBody, ReqQuery, Locals>(
+	first?: IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>,
+	...middlewares: ReadonlyArray<IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>>
 ) => {
 	while (Array.isArray(first)) [first, ...middlewares] = [...first, ...middlewares]
-	return (req: Request, res: Response, next: NextFunction) => first
-		? (first as RequestHandler)(req, res, (err?: any) => err
+	return (
+		req: Request<P, ResBody, ReqBody, ReqQuery, Locals>,
+		res: Response<ResBody, Locals>,
+		next: NextFunction
+	) => first
+		? (first as RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>)(req, res, (err?: any) => err
 			? next(err)
 			: combineMiddlewares(...middlewares)(req, res, next))
 		: next()
@@ -71,34 +84,36 @@ export const mockExpressMajorVersion = (v: number) => expressMajorVersion = v
  * @param middleware a single middleware
  * @return result/error promise
  */
-export const middlewareToPromise = (
-	middleware: RequestHandler
+export const middlewareToPromise = <P, ResBody, ReqBody, ReqQuery, Locals>(
+	middleware: RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
 ) => (
-	req: Request, res: Response
-): Promise<void> => new Promise(
-	async (resolve, reject) => {
-		let maybePromise
-		try {
-			maybePromise = middleware(req, res, (err?: any) => {
-				if (err) reject(err)
-				else resolve()
-			})
-		} catch (err) {
-			return reject(err)
-		}
-		if (isPromise(maybePromise)) {
+		req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>
+	): Promise<void> => new Promise(
+		async (resolve, reject) => {
+			let maybePromise
 			try {
-				await maybePromise
+				maybePromise = middleware(req, res, (err?: any) => {
+					if (err) reject(err)
+					else resolve()
+				})
 			} catch (err) {
-				// ignore rejected promise in express <= 4.x
-				if (expressMajorVersion >= 5) reject(err)
+				return reject(err)
+			}
+			if (isPromise(maybePromise)) {
+				try {
+					await maybePromise
+				} catch (err) {
+					// ignore rejected promise in express <= 4.x
+					if (expressMajorVersion >= 5) reject(err)
+				}
 			}
 		}
-	}
-)
+	)
 
 /**
  * extended version of middlewareToPromise which allows one or more middleware / array of middlewares
  * @param args
  */
-export const combineToAsync = (...args: IRequestHandlerArray) => middlewareToPromise(combineMiddlewares(...args))
+export const combineToAsync = <P, ResBody, ReqBody, ReqQuery, Locals>(
+	...args: IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals>
+) => middlewareToPromise(combineMiddlewares(...args))
