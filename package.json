@@ -4,7 +4,7 @@
 	"description": "A handy tool to work with async/promise express middleware",
 	"main": "index.js",
 	"repository": "github:tranvansang/middleware-async",
-	"author": "Tran Sang <tranvansangk41@gmail.com>",
+	"author": "Tran Sang <me@transa.ng>",
 	"license": "MIT",
 	"private": false,
 	"files": [
