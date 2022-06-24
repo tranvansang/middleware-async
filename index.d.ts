@@ -1,5 +1,7 @@
-import type { NextFunction, Request, RequestHandler, Response } from 'express';
-export declare const asyncMiddleware: <P, ResBody, ReqBody, ReqQuery, Locals>(middleware: (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>, next: NextFunction) => Promise<any> | any) => (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>, next: NextFunction) => void | Promise<void>;
+/// <reference types="qs" />
+import type { NextFunction, Request, RequestHandler, Response } from 'express/ts4.0';
+import type * as core from 'express-serve-static-core';
+export declare const asyncMiddleware: <P = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = import("qs").ParsedQs, Locals extends Record<string, any> = Record<string, any>>(middleware: (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>, next: NextFunction) => Promise<any> | any) => (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>, next: NextFunction) => void | Promise<void>;
 /**
  * wrap async function to connect-like middleware
  * @param middleware can return Promise or throw error
@@ -17,7 +19,7 @@ declare type IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals> = Reado
  * @param middlewares
  * @returns {Function}
  */
-export declare const combineMiddlewares: <P, ResBody, ReqBody, ReqQuery, Locals>(first?: IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>, ...middlewares: readonly IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>[]) => (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>, next: NextFunction) => void;
+export declare const combineMiddlewares: <P = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = import("qs").ParsedQs, Locals extends Record<string, any> = Record<string, any>>(first?: IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>, ...middlewares: readonly IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>[]) => (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>, next: NextFunction) => void;
 export declare const mockExpressMajorVersion: (v: number) => number;
 /**
  * mimic the next middleware. For express <= 4.x, synchronous error is caught, and returned rejected promise is ignored.
@@ -25,9 +27,9 @@ export declare const mockExpressMajorVersion: (v: number) => number;
  * @param middleware a single middleware
  * @return result/error promise
  */
-export declare const middlewareToPromise: <P, ResBody, ReqBody, ReqQuery, Locals>(middleware: RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>) => (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>) => Promise<void>;
+export declare const middlewareToPromise: <P = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = import("qs").ParsedQs, Locals extends Record<string, any> = Record<string, any>>(middleware: RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>) => (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>) => Promise<void>;
 /**
  * extended version of middlewareToPromise which allows one or more middleware / array of middlewares
  * @param args
  */
-export declare const combineToAsync: <P, ResBody, ReqBody, ReqQuery, Locals>(...args: IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals>) => (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>) => Promise<void>;
+export declare const combineToAsync: <P = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = import("qs").ParsedQs, Locals extends Record<string, any> = Record<string, any>>(...args: IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals>) => (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>) => Promise<void>;

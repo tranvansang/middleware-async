@@ -1,17 +1,24 @@
 // eslint-disable-next-line import/no-unresolved
-import type {NextFunction, Request, RequestHandler, Response} from 'express'
+import type {NextFunction, Request, RequestHandler, Response} from 'express/ts4.0'
+import type * as core from 'express-serve-static-core'
 
 const isPromise = (maybePromise: any): maybePromise is typeof Promise => !!maybePromise
 	&& (typeof maybePromise === 'object' || typeof maybePromise === 'function')
 	&& typeof maybePromise.then === 'function'
 
-export const asyncMiddleware = <P, ResBody, ReqBody, ReqQuery, Locals>(
-	middleware: (
+export const asyncMiddleware = <
+	P = core.ParamsDictionary,
+	ResBody = any,
+	ReqBody = any,
+	ReqQuery = core.Query,
+	Locals extends Record<string, any> = Record<string, any>
+	>(
+		middleware: (
 		req: Request<P, ResBody, ReqBody, ReqQuery, Locals>,
 		res: Response<ResBody, Locals>,
 		next: NextFunction
 	) => Promise<any> | any
-) => (
+	) => (
 		req: Request<P, ResBody, ReqBody, ReqQuery, Locals>,
 		res: Response<ResBody, Locals>,
 		next: NextFunction
@@ -60,10 +67,16 @@ type IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals> = ReadonlyArray
  * @param middlewares
  * @returns {Function}
  */
-export const combineMiddlewares = <P, ResBody, ReqBody, ReqQuery, Locals>(
-	first?: IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>,
-	...middlewares: ReadonlyArray<IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>>
-) => {
+export const combineMiddlewares = <
+	P = core.ParamsDictionary,
+	ResBody = any,
+	ReqBody = any,
+	ReqQuery = core.Query,
+	Locals extends Record<string, any> = Record<string, any>
+	>(
+		first?: IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>,
+		...middlewares: ReadonlyArray<IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>>
+	) => {
 	while (Array.isArray(first)) [first, ...middlewares] = [...first, ...middlewares]
 	return (
 		req: Request<P, ResBody, ReqBody, ReqQuery, Locals>,
@@ -84,9 +97,15 @@ export const mockExpressMajorVersion = (v: number) => expressMajorVersion = v
  * @param middleware a single middleware
  * @return result/error promise
  */
-export const middlewareToPromise = <P, ResBody, ReqBody, ReqQuery, Locals>(
-	middleware: RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
-) => (
+export const middlewareToPromise = <
+	P = core.ParamsDictionary,
+	ResBody = any,
+	ReqBody = any,
+	ReqQuery = core.Query,
+	Locals extends Record<string, any> = Record<string, any>
+	>(
+		middleware: RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
+	) => (
 		req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>
 	): Promise<void> => new Promise(
 		async (resolve, reject) => {
@@ -115,6 +134,12 @@ export const middlewareToPromise = <P, ResBody, ReqBody, ReqQuery, Locals>(
  * extended version of middlewareToPromise which allows one or more middleware / array of middlewares
  * @param args
  */
-export const combineToAsync = <P, ResBody, ReqBody, ReqQuery, Locals>(
-	...args: IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals>
-) => middlewareToPromise(combineMiddlewares(...args))
+export const combineToAsync = <
+	P = core.ParamsDictionary,
+	ResBody = any,
+	ReqBody = any,
+	ReqQuery = core.Query,
+	Locals extends Record<string, any> = Record<string, any>
+	>(
+		...args: IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals>
+	) => middlewareToPromise(combineMiddlewares(...args))
