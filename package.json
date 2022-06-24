@@ -9,7 +9,8 @@
 	"private": false,
 	"files": [
 		"index.d.ts",
-		"index.js"
+		"index.js",
+		"index.mjs"
 	],
 	"scripts": {
 		"build": "yarn build:es && yarn build:commonjs",
