@@ -60,6 +60,6 @@ typings/
 # next.js build output
 .next
 .idea
-coverage
 index.d.ts
 index.js
+index.mjs
