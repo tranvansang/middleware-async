@@ -97,7 +97,8 @@ export const middlewareToPromise = <P, ResBody, ReqBody, ReqQuery, Locals>(
 					else resolve()
 				})
 			} catch (err) {
-				return reject(err)
+				reject(err)
+				return
 			}
 			if (isPromise(maybePromise)) {
 				try {

@@ -14,8 +14,8 @@
 	],
 	"scripts": {
 		"build": "yarn build:es && yarn build:commonjs",
-		"build:es": "yarn tsc -d --target es5 --moduleResolution node --module es6 --outDir es  index.ts && mv es/index.js index.mjs && rm -rf es",
-		"build:commonjs": "yarn tsc -d --target es5 --moduleResolution node --module commonjs --outDir . index.ts",
+		"build:es": "yarn tsc -d --skipLibCheck --target es5 --moduleResolution node --module es6 --outDir es  index.ts && mv es/index.js index.mjs && rm -rf es",
+		"build:commonjs": "yarn tsc -d --skipLibCheck --target es5 --moduleResolution node --module commonjs --outDir . index.ts",
 		"test": "yarn jest",
 		"coverage": "yarn jest --coverage",
 		"clean": "rm -rf index.d.ts index.js coverage",

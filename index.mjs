@@ -34,10 +34,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
 };
 var isPromise = function (maybePromise) { return !!maybePromise
     && (typeof maybePromise === 'object' || typeof maybePromise === 'function')
@@ -102,7 +106,7 @@ export var combineMiddlewares = function (first) {
         middlewares[_i - 1] = arguments[_i];
     }
     while (Array.isArray(first))
-        _a = __spreadArray(__spreadArray([], first), middlewares), first = _a[0], middlewares = _a.slice(1);
+        _a = __spreadArray(__spreadArray([], first, true), middlewares, true), first = _a[0], middlewares = _a.slice(1);
     return function (req, res, next) { return first
         ? first(req, res, function (err) { return err
             ? next(err)
@@ -131,7 +135,8 @@ export var middlewareToPromise = function (middleware) { return function (req, r
                     });
                 }
                 catch (err) {
-                    return [2 /*return*/, reject(err)];
+                    reject(err);
+                    return [2 /*return*/];
                 }
                 if (!isPromise(maybePromise)) return [3 /*break*/, 4];
                 _a.label = 1;

@@ -1,5 +1,5 @@
 module.exports = {
-	name: 'middleware-async',
+	displayName: 'middleware-async',
 	moduleFileExtensions: ['ts', 'js'],
 	verbose: true,
 	collectCoverageFrom: ['<rootDir>/index.ts'],
