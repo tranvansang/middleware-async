@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import type {NextFunction, Request, RequestHandler, Response} from 'express/ts4.0'
+import type {NextFunction, Request, RequestHandler, Response} from 'express'
 import type * as core from 'express-serve-static-core'
 
 const isPromise = (maybePromise: any): maybePromise is typeof Promise => !!maybePromise
@@ -52,10 +52,16 @@ export const asyncMiddleware = <
  */
 export default asyncMiddleware
 
-type IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals> = RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
+type IRequestHandler<
+	P,
+	ResBody,
+	ReqBody,
+	ReqQuery,
+	Locals extends Record<string, any>
+> = RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
 // eslint-disable-next-line no-use-before-define
 	| IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals>
-type IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals> = ReadonlyArray<
+type IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals extends Record<string, any>> = ReadonlyArray<
 	IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>
 	>
 

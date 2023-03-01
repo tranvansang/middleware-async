@@ -1,5 +1,5 @@
 /// <reference types="qs" />
-import type { NextFunction, Request, RequestHandler, Response } from 'express/ts4.0';
+import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import type * as core from 'express-serve-static-core';
 export declare const asyncMiddleware: <P = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = import("qs").ParsedQs, Locals extends Record<string, any> = Record<string, any>>(middleware: (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>, next: NextFunction) => Promise<any> | any) => (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>, next: NextFunction) => void | Promise<void>;
 /**
@@ -9,8 +9,8 @@ export declare const asyncMiddleware: <P = core.ParamsDictionary, ResBody = any,
  * next function is always called at most once
  */
 export default asyncMiddleware;
-declare type IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals> = RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals> | IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals>;
-declare type IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals> = ReadonlyArray<IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>>;
+type IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals extends Record<string, any>> = RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals> | IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals>;
+type IRequestHandlerArray<P, ResBody, ReqBody, ReqQuery, Locals extends Record<string, any>> = ReadonlyArray<IRequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>>;
 /**
  * combine list of middlewares into 1 middlewares
  * the combined chain does not break if any middleware returns a rejected promise
