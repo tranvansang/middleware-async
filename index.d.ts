@@ -1,5 +1,5 @@
 /// <reference types="qs" />
-import type { NextFunction, Request, RequestHandler, Response } from 'express/ts4.0';
+import type { NextFunction, Request, RequestHandler, Response } from 'express';
 import type * as core from 'express-serve-static-core';
 export declare const asyncMiddleware: <P = core.ParamsDictionary, ResBody = any, ReqBody = any, ReqQuery = import("qs").ParsedQs, Locals extends Record<string, any> = Record<string, any>>(middleware: (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>, next: NextFunction) => Promise<any> | any) => (req: Request<P, ResBody, ReqBody, ReqQuery, Locals>, res: Response<ResBody, Locals>, next: NextFunction) => void | Promise<void>;
 /**
