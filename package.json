@@ -18,7 +18,7 @@
 		"build:commonjs": "yarn tsc -d --skipLibCheck --target es5 --declaration --moduleResolution node --module commonjs --outDir . --sourceMap index.ts",
 		"test": "yarn jest",
 		"coverage": "yarn jest --coverage",
-		"clean": "rm -rf index.d.ts index.js coverage",
+		"clean": "rm -rf index.d.ts index.js index.js.map index.mjs index.js.map es coverage",
 		"lint": "yarn eslint index.ts",
 		"prepublishOnly": "yarn clean && yarn lint && yarn coverage && yarn clean && yarn build"
 	},
