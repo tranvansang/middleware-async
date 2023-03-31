@@ -167,3 +167,4 @@ export var combineToAsync = function () {
     }
     return middlewareToPromise(combineMiddlewares.apply(void 0, args));
 };
+//# sourceMappingURL=index.mjs.map

@@ -175,3 +175,4 @@ var combineToAsync = function () {
     return (0, exports.middlewareToPromise)(exports.combineMiddlewares.apply(void 0, args));
 };
 exports.combineToAsync = combineToAsync;
+//# sourceMappingURL=index.js.map
