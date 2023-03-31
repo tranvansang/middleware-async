@@ -10,7 +10,9 @@
 	"files": [
 		"index.d.ts",
 		"index.js",
-		"index.mjs"
+		"index.js.map",
+		"index.mjs",
+		"index.mjs.map"
 	],
 	"scripts": {
 		"build": "yarn build:es && yarn build:commonjs",
