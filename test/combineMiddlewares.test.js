@@ -1,16 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 /* eslint-disable import/no-extraneous-dependencies */
-import asyncMiddleware, {combineMiddlewares, combineToAsync, middlewareToPromise} from '../index'
-import flipPromise from 'flip-promise'
+const {asyncMiddleware, combineMiddlewares, combineToAsync, middlewareToPromise} = require('../index')
+const flipPromise = require('flip-promise').default
 
-declare global {
-	namespace Express {
-		interface Request {
-			val: number
-		}
-	}
-}
+// declare global {
+// 	namespace Express {
+// 		interface Request {
+// 			val: number
+// 		}
+// 	}
+// }
 
 describe('combineMiddlewares', () => {
 	test('should go through all middlewares', async () => {

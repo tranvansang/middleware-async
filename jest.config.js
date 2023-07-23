@@ -1,9 +1,8 @@
 module.exports = {
 	displayName: 'middleware-async',
-	moduleFileExtensions: ['ts', 'js'],
+	moduleFileExtensions: ['cjs', 'js'],
 	verbose: true,
-	collectCoverageFrom: ['<rootDir>/index.ts'],
-	transform: {'^.+\\.(ts)$': 'babel-jest'},
-	testMatch: ['<rootDir>/test/*.test.ts'],
+	collectCoverageFrom: ['<rootDir>/index.cjs'],
+	testMatch: ['<rootDir>/test/*.test.js'],
 	testEnvironment: 'node'
 }

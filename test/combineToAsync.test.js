@@ -1,14 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import {combineToAsync} from '../index'
+const {combineToAsync} = require('../index')
 
-declare global {
-	namespace Express {
-		interface Request {
-			val: number
-		}
-	}
-}
+// declare global {
+// 	namespace Express {
+// 		interface Request {
+// 			val: number
+// 		}
+// 	}
+// }
 describe('combine to async', () => {
 	test('combine middlewares to async', async () => {
 		const req = {val: 1}

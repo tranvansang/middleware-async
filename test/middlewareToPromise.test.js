@@ -1,8 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 /* eslint-disable import/no-extraneous-dependencies */
-import {middlewareToPromise, mockExpressMajorVersion} from '../index'
-import flipPromise from 'flip-promise'
+const {middlewareToPromise, mockExpressMajorVersion} = require('../index')
+const flipPromise = require('flip-promise').default
 
 describe('middlewareToPromise', () => {
 	test('should resolve', async () => {

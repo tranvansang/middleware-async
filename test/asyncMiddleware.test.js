@@ -1,7 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 /* eslint-disable import/no-extraneous-dependencies */
-import asyncMiddleware from '../index'
+const {asyncMiddleware} = require('../index')
 
 describe('asyncMiddleware', () => {
 	test('should accept non async middleware', async () => {
@@ -23,7 +21,7 @@ describe('asyncMiddleware', () => {
 
 	test('should response request', async () => {
 		const res = jest.fn()
-		await asyncMiddleware(async (req, res: any) => {
+		await asyncMiddleware(async (req, res) => {
 			await Promise.resolve()
 			res()
 		})(null, res, jest.fn())
