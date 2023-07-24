@@ -3,7 +3,7 @@
 	"version": "1.4.0",
 	"description": "A handy tool to work with async/promise express middleware",
 	"repository": "github:tranvansang/middleware-async",
-	"author": "Tran Sang <t@sang.jp>",
+	"author": "Sang Tran <t@sang.jp>",
 	"license": "MIT",
 	"main": "index.cjs",
 	"exports": {

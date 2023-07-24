@@ -2,7 +2,7 @@
   "name": "express5",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "Tran Sang <t@sang.jp>",
+  "author": "Sang Tran <t@sang.jp>",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
