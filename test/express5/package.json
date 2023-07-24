@@ -8,6 +8,6 @@
   "devDependencies": {
     "express": "^5.0.0-alpha.8",
     "jest": "^26.6.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.7"
   }
 }
